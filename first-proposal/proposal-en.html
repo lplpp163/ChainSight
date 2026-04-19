@@ -1650,6 +1650,8 @@
   .toc-list {
     display: flex; flex-direction: column;
     gap: 9px;
+    flex: 1;
+    justify-content: space-between;
   }
   .toc-item {
     display: grid;
@@ -1819,14 +1821,17 @@
   /* ============ TOC denser ============ */
   .toc-hook, .toc-lede, .toc-legend, .toc-footer-note { display: none; }
   .toc-title { font-family: 'Source Serif 4', Georgia, serif; font-size: 64px; font-weight: 400; line-height: 0.9; color: var(--ink); letter-spacing: -0.03em; margin-bottom: 8px; }
-  .toc-subline { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px solid var(--ink); display: flex; justify-content: space-between; }
+  .toc-subline { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); display: flex; justify-content: space-between; }
   .toc-subline .hl { color: var(--accent); font-weight: 700; display: none; }
   .toc-grid { flex: 1; }
-  .toc-col h4 { font-size: 18px; margin-bottom: 12px; font-weight: 600; }
+  .toc-col h4 { font-size: 22px; margin-bottom: 16px; font-weight: 600; line-height: 1.15; }
   .toc-col .part { font-size: 10px; margin-bottom: 6px; }
-  .toc-item { padding: 5px 0; }
-  .toc-item .n { font-size: 14px; }
-  .toc-item .t { font-size: 11.5px; line-height: 1.4; }
+  .toc-item { padding: 7px 0; }
+  .toc-item .n { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .toc-item .t { font-size: 13px; line-height: 1.5; }
+  .toc-item .t b { font-size: 14.5px; font-weight: 700; }
+  .toc-item.key .t b { color: var(--accent); }
+  .toc-item.key .n { color: var(--accent); }
 
   @media print {
     body { background: white; }
@@ -2106,15 +2111,15 @@
           <span class="chap">Guide</span>
           <span class="cat">Contents</span>
         </div>
-        <div class="tagline">14 chapters in 3 parts, 16 pages. Orange marks the 5 core chapters.</div>
+        <div class="tagline">13 chapters + appendix · 3 parts · 16 pages · orange = 5 core chapters</div>
       </div>
       <div class="pager"><b>02</b> / 16</div>
     </div>
     <div class="toc-body">
       <div class="toc-title">Contents</div>
       <div class="toc-subline">
-        <span>CH.00 → CH.12 · 16 PAGES</span>
-        <span class="hl">Orange = 5 core chapters · market / product / business / moat / financials</span>
+        <span>CH.00 → CH.12 + APPENDIX · 3 PARTS</span>
+        <span class="hl">Orange = 5 core chapters · opportunity / product / business / moat / financials</span>
       </div>
 
       <div class="toc-grid">
@@ -2124,7 +2129,7 @@
           <div class="toc-list">
             <div class="toc-item">
               <div class="n">00.</div>
-              <div class="t"><b>Market Pain</b> — Malaysia AI adoption under 40%, chip exports booming · p.02</div>
+              <div class="t"><b>Market Pain</b> — Malaysia AI adoption under 40%, chip exports booming · p.03</div>
               <div></div>
             </div>
             <div class="toc-item">
@@ -2137,7 +2142,7 @@
               <div class="t"><b>Market Opportunity</b> — CHT Malaysia subsidiary (Dec 2025), NIA incentives · p.05</div>
               <div></div>
             </div>
-            <div class="toc-item key">
+            <div class="toc-item">
               <div class="n">03.</div>
               <div class="t"><b>Market &amp; Moat</b> — $1.2B corridor, competitor comparison · p.06</div>
               <div></div>
@@ -2151,12 +2156,12 @@
           <div class="toc-list">
             <div class="toc-item key">
               <div class="n">04.</div>
-              <div class="t"><b>Product / Solution</b> — three AI helpers: Pulse, Predict, Comply · p.07</div>
+              <div class="t"><b>Product / Solution</b> — Pulse, Predict, Comply · running on CHT's edge fabric · p.07</div>
               <div></div>
             </div>
             <div class="toc-item">
               <div class="n">05.</div>
-              <div class="t"><b>Technical Architecture</b> — $240 edge box, data stays on site · p.08</div>
+              <div class="t"><b>Technical Architecture</b> — $240 edge box on CHT subsea backbone, data stays on site · p.08</div>
               <div></div>
             </div>
             <div class="toc-item key">
@@ -2174,16 +2179,16 @@
 
         <div class="toc-col">
           <div class="part">PART C · Why CHT wins</div>
-          <h4>Financials, execution, growth</h4>
+          <h4>The numbers back the plan</h4>
           <div class="toc-list">
-            <div class="toc-item key">
+            <div class="toc-item">
               <div class="n">08.</div>
-              <div class="t"><b>Financials</b> — break-even Year 3 Q4, $24M by Year 5 · p.11</div>
+              <div class="t"><b>Roadmap</b> — 18 months, $3M, 4 phases · p.11</div>
               <div></div>
             </div>
-            <div class="toc-item">
+            <div class="toc-item key">
               <div class="n">09.</div>
-              <div class="t"><b>Roadmap</b> — 18 months, $3M, 4 phases · p.12</div>
+              <div class="t"><b>Financials</b> — break-even Year 3 Q4, $24M by Year 5 · p.12</div>
               <div></div>
             </div>
             <div class="toc-item">
@@ -2193,7 +2198,7 @@
             </div>
             <div class="toc-item">
               <div class="n">11–12.</div>
-              <div class="t"><b>Impact, Expansion, Ask</b> — $24M by Year 5, 3 countries, 1 green light · p.14–15</div>
+              <div class="t"><b>Impact, Expansion, Ask</b> — 3-country rollout, $3M ask, playbook replicates · p.14–15</div>
               <div></div>
             </div>
             <div class="toc-item">
@@ -2206,7 +2211,7 @@
       </div>
     </div>
     <div class="slide-footer">
-      <div class="left">Chapter numbers match the top-left CH.XX tag on every slide · orange = 5 core chapters (market · product · business · moat · financials)</div>
+      <div class="left">Chapter numbers match the top-left CH.XX tag on every slide · orange = 5 core chapters (opportunity · product · business · moat · financials)</div>
       <div class="right">ChainSight · 02</div>
     </div>
   </section>
