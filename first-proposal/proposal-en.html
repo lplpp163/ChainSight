@@ -1727,7 +1727,7 @@
 
   /* ============ Market Pain slide ============ */
   .pain-body { flex: 1; padding: 48px 54px 40px; display: flex; flex-direction: column; min-height: 0; }
-  .pain-hook { font-family: 'Source Serif 4', Georgia, serif; font-size: 28px; line-height: 1.32; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); max-width: 1100px; margin: 0 0 8px; }
+  .pain-hook { font-family: 'Source Serif 4', Georgia, serif; font-size: 32px; line-height: 1.25; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); max-width: 1140px; margin: 0 0 14px; }
   .pain-hook em { color: var(--accent); font-weight: 600; }
   .pain-lede { font-size: 12.5px; line-height: 1.7; color: var(--ink-3); max-width: 1040px; margin-bottom: 16px; }
   .pain-lede b { color: var(--ink); font-weight: 700; }
@@ -1739,7 +1739,7 @@
   .pain-stat .l { font-size: 10px; line-height: 1.55; color: var(--ink-3); margin-top: 5px; }
   .pain-stat .l b { color: var(--ink); font-weight: 700; }
   .slide-body > .pain-stats .v { font-size: 22px; }
-  .pain-points { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+  .pain-points { display: flex; flex-direction: column; gap: 7px; margin-top: 14px; }
   .pain-point { display: grid; grid-template-columns: 26px 1fr; gap: 10px; padding-bottom: 8px; border-bottom: 1px dashed var(--hairline); align-items: baseline; }
   .pain-point:last-child { border-bottom: none; padding-bottom: 0; }
   .pain-point .n { font-family: 'Source Serif 4', Georgia, serif; font-size: 13px; color: var(--accent); font-weight: 600; line-height: 1; }
@@ -1748,7 +1748,7 @@
   .pain-point .txt em { color: var(--accent); font-weight: 600; }
   .pain-side { display: flex; flex-direction: column; border-left: 2px solid var(--ink); padding-left: 24px; }
   .pain-side .side-label { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-  .pain-side h3 { font-family: 'Source Serif 4', Georgia, serif; font-size: 16px; font-weight: 700; line-height: 1.4; color: var(--ink); margin-bottom: 12px; }
+  .pain-side h3 { font-family: 'Source Serif 4', Georgia, serif; font-size: 17px; font-weight: 700; line-height: 1.35; color: var(--ink); margin-bottom: 12px; }
   .pain-side h3 em { color: var(--accent); font-weight: 600; }
   .pain-rank { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
   .pain-rank .row { display: grid; grid-template-columns: 38px 1fr 60px; gap: 10px; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--hairline); }
@@ -2229,8 +2229,7 @@
       <div class="pager"><b>03</b> / 16</div>
     </div>
     <div class="pain-body">
-      <div class="eyebrow accent" style="font-size:14px;letter-spacing:0.18em;margin-bottom:6px;">Market Pain</div>
-      <h2 class="pain-hook">Malaysia sits at the <em>bottom of Southeast Asia</em> on AI adoption, yet handles <em>13%</em> of the world's chip packaging. The country doesn't lack orders — it lacks a data layer that lets those orders be seen.</h2>
+      <h2 class="pain-hook">Malaysia packages <em>13%</em> of the world's chips but ranks <em>last in Southeast Asia</em> on AI adoption — the orders exist, the data layer to see them doesn't.</h2>
       <p class="pain-lede">
         Adobe's study says Malaysian companies are <b>behind other Southeast Asia countries</b> in using AI, and their business use lags far behind what their employees and customers already expect. But on the same land, from 2020 to 2024 data-centre capacity in Johor jumped from 10MW to <b>1,500MW</b>, 2024 data-centre investment doubled again, and Intel alone put <b>$7 billion</b> into one 3D packaging plant. The hardware is ready. The AI layer is not. That's the gap we're going into.
       </p>
@@ -2251,8 +2250,8 @@
               <div class="l">Of global <b>chip packaging &amp; test</b> sits in Malaysia (6th-largest chip exporter)</div>
             </div>
             <div class="pain-stat">
-              <div class="v">$<em>7</em>B</div>
-              <div class="l">Intel 3D packaging plant · Infineon, ASE, Inari <b>expanding at the same time</b></div>
+              <div class="v">4,000<em>+</em></div>
+              <div class="l">Tier-2/3 suppliers feeding Intel / ASE / Infineon — <b>82% still on Excel</b> (MIDA 2024)</div>
             </div>
             <div class="pain-stat">
               <div class="v">50<em>%</em></div>
@@ -2267,7 +2266,7 @@
           <div class="pain-points">
             <div class="pain-point">
               <div class="n">01</div>
-              <div class="txt"><b>Hardware ready, software behind.</b> Malaysia is already one of the world's most concentrated compute regions, but local firms sit at the bottom of SE Asia on AI use — <em>the hardware and software don't talk yet</em>.</div>
+              <div class="txt"><b>Fabs run 24/7, suppliers run on Excel.</b> Thousands of Tier-2/3 shops feed Intel / ASE / Infineon with spreadsheets and phone calls — <em>a 48-hour answer to "what's your capacity today" means the PO goes to Vietnam</em>.</div>
             </div>
             <div class="pain-point">
               <div class="n">02</div>
@@ -2282,7 +2281,7 @@
 
         <div class="pain-side">
           <div class="side-label">Global AI Index · Tortoise Media</div>
-          <h3>Singapore ranks <em>#3 in the world</em> and #1 on AI Intensity — Malaysia, as its neighbour, just needs a data pipe that actually connects.</h3>
+          <h3>Singapore is <em>#3 globally</em> and #1 on AI Intensity. Malaysia sits 60 km away with matching compute but <em>no AI layer on top</em> — that's our entry point.</h3>
 
           <div class="pain-rank">
             <div class="row">
@@ -2318,7 +2317,7 @@
           </div>
 
           <div class="pain-insight">
-            <b>For companies:</b> the most cost-effective data-centre base for the next 10 years. <b>For makers:</b> a key node in the new supply-chain map. <b>For startups and research:</b> not mature yet, but <b>worth betting on</b>.
+            <b>For Tier-1 fabs:</b> they can't see supplier capacity in real time. <b>For suppliers:</b> they can't prove compliance fast enough to win the PO. <b>For CHT:</b> the only player with <em>cables + subsidiary + ASE reference</em> on day one.
           </div>
         </div>
       </div>
