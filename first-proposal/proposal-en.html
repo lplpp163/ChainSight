@@ -1,0 +1,2595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChainSight — First Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #0A1F44;
+    --ink-2: #152A4F;
+    --ink-3: #243860;
+    --cream: #F7F1E6;
+    --cream-2: #EEE5D2;
+    --cream-3: #E5DAC1;
+    --paper: #FDFBF5;
+    --accent: #E8501C;
+    --accent-2: #C7400E;
+    --accent-soft: #F8E5DA;
+    --sage: #5F7F47;
+    --sage-soft: #E4EAD7;
+    --rust: #A53F22;
+    --hairline: #D9CCB8;
+    --hairline-ink: rgba(10, 31, 68, 0.12);
+    --muted: #6B6455;
+    --muted-2: #9B9080;
+  }
+
+  html, body {
+    font-family: 'Manrope', -apple-system, sans-serif;
+    background: #C3BEB0;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    font-feature-settings: 'ss01', 'ss02', 'cv11';
+  }
+
+  .deck {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 22px; padding: 30px 0;
+  }
+
+  .slide {
+    width: 1280px; height: 720px;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 10px 40px rgba(10, 31, 68, 0.18);
+    page-break-after: always; break-after: page;
+  }
+  .slide:last-child { page-break-after: auto; }
+
+  /* ============ REUSABLE ATOMS ============ */
+  .display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+  .display.italic { font-style: italic; font-variation-settings: 'opsz' 144, 'SOFT' 50; }
+  .display.heavy { font-weight: 700; }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .eyebrow {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow.accent { color: var(--accent); }
+  .eyebrow.cream { color: var(--cream-2); }
+
+  .hairline {
+    height: 1px;
+    background: var(--hairline);
+  }
+  .hairline.dark { background: var(--hairline-ink); }
+  .hairline.accent { background: var(--accent); height: 2px; }
+
+  /* Slide chrome */
+  .chrome {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 20px 64px 0;
+    z-index: 10;
+    gap: 24px;
+  }
+  .chrome .brand {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .chrome .brand em { font-style: italic; color: var(--accent); font-weight: 500; }
+  .chrome .brand-group {
+    display: flex; flex-direction: column; gap: 6px;
+    max-width: 1040px; min-width: 0;
+  }
+  .chrome .brand-row {
+    display: flex; gap: 10px; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    flex-wrap: nowrap;
+  }
+  .chrome .brand-row .chap {
+    color: var(--accent); font-weight: 700;
+    background: var(--accent-soft); padding: 3px 8px;
+    border-radius: 2px; letter-spacing: 0.14em;
+    white-space: nowrap;
+  }
+  .chrome .brand-row .cat {
+    color: var(--ink); font-weight: 600;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+  }
+  .chrome .brand-row.key .cat { color: var(--accent); }
+  .chrome .brand-row .mark {
+    font-family: 'Fraunces', serif;
+    font-size: 10px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 3px 7px;
+    border-radius: 2px;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chrome .tagline {
+    font-family: 'Fraunces', serif;
+    font-size: 15px; font-weight: 600;
+    color: var(--ink); line-height: 1.32;
+    letter-spacing: -0.01em;
+    max-width: 1020px;
+  }
+  .chrome .tagline em {
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .chrome .pager {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    padding-top: 4px;
+    white-space: nowrap;
+  }
+  .chrome .pager b { color: var(--accent); font-weight: 500; }
+
+  .slide-footer {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 14px 64px 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 9px;
+    color: var(--muted-2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 10;
+  }
+  .slide-footer .left { max-width: 800px; }
+  .slide-footer .right { color: var(--muted); }
+
+  .slide-body {
+    flex: 1;
+    padding: 78px 64px 52px;
+    display: flex; flex-direction: column;
+    position: relative;
+    min-height: 0;
+  }
+
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    max-width: 900px;
+    font-weight: 400;
+  }
+
+  /* Grain */
+  .slide::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(10,31,68,0.04) 1px, transparent 0);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .slide > * { position: relative; z-index: 2; }
+  .slide::before { z-index: 1; }
+
+  /* ============ SLIDE 01 · COVER ============ */
+  .cover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .cover::before {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+  }
+  .cover-inner {
+    padding: 56px 72px 48px;
+    height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; z-index: 2;
+  }
+  .cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .cover-top .cht-mark { display: flex; align-items: flex-start; gap: 12px; }
+  .cover-top .cht-mark .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(232,80,28,0.25);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .cover-top .cht-mark .label-stack {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .cover-top .cht-mark .name {
+    font-family: 'Fraunces', serif; font-size: 15px; color: var(--cream);
+    letter-spacing: -0.01em;
+  }
+  .cover-top .cht-mark .name em { color: var(--accent); font-style: italic; }
+  .cover-top .cht-mark .team {
+    font-family: 'Noto Serif TC', 'Fraunces', serif;
+    font-size: 14px; font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+  }
+  .cover-top .cht-mark .team .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: rgba(247,241,230,0.5);
+    margin-right: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .cover-top .cht-mark .team .nm {
+    color: var(--accent);
+  }
+  .cover-top .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: rgba(247,241,230,0.55);
+    text-align: right; letter-spacing: 0.12em;
+    line-height: 1.8;
+  }
+  .cover-title {
+    font-family: 'Fraunces', serif;
+    font-size: 150px;
+    font-weight: 400;
+    line-height: 0.85;
+    letter-spacing: -0.045em;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+  }
+  .cover-title .chain { color: var(--cream); }
+  .cover-title .sight {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 300;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+  .cover-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.4;
+    color: rgba(247,241,230,0.85);
+    max-width: 900px;
+    margin-top: 20px;
+    font-weight: 300;
+  }
+  .cover-sub b { color: var(--cream); font-weight: 400; font-style: normal; }
+  .cover-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(247,241,230,0.2);
+  }
+  .cover-stat .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: rgba(247,241,230,0.5);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .cover-stat .v {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: -0.015em;
+  }
+  .cover-stat .v em { color: var(--accent); font-style: italic; }
+
+  /* ============ SLIDE 02 · EXECUTIVE SUMMARY ============ */
+  .exec-body {
+    padding: 80px 64px 52px;
+    flex: 1;
+    display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .exec-hook {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    line-height: 1.08;
+    font-weight: 400;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+    max-width: 1080px;
+    margin-bottom: 14px;
+    margin-top: 8px;
+  }
+  .exec-hook em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .exec-hook .strike {
+    position: relative; display: inline-block;
+    color: var(--rust);
+  }
+  .exec-hook .strike::after {
+    content: ''; position: absolute;
+    left: -4px; right: -4px;
+    top: 55%; height: 3px;
+    background: var(--rust);
+    transform: rotate(-1.5deg);
+  }
+  .exec-lede {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px; line-height: 1.6;
+    color: var(--muted); max-width: 880px;
+    margin-bottom: 28px;
+  }
+  .exec-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    flex: 1;
+  }
+  .exec-col {
+    background: var(--cream);
+    padding: 20px 28px 16px 0;
+    display: flex; flex-direction: column;
+  }
+  .exec-col:nth-child(1) { padding-right: 28px; }
+  .exec-col:nth-child(2) { padding-left: 28px; padding-right: 28px; }
+  .exec-col:nth-child(3) { padding-left: 28px; padding-right: 0; }
+  .exec-col .num {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .exec-col h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.15;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .exec-col p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-3);
+  }
+  .exec-col p b { color: var(--ink); font-weight: 600; }
+  .exec-col p .hl {
+    background: var(--accent-soft);
+    padding: 0 3px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ============ SLIDE 03 · PROBLEM ============ */
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    flex: 1;
+  }
+  .hero-number-block {
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding-right: 40px;
+    border-right: 1px solid var(--hairline);
+  }
+  .hero-number-block .num {
+    font-family: 'Fraunces', serif;
+    font-size: 200px;
+    font-weight: 400;
+    line-height: 0.85;
+    color: var(--accent);
+    letter-spacing: -0.05em;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+  }
+  .hero-number-block .num .pct {
+    font-size: 80px; vertical-align: top;
+    position: relative; top: 24px;
+  }
+  .hero-number-block .caption {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.35;
+    color: var(--ink);
+    margin-top: 20px;
+    max-width: 580px;
+    font-weight: 400;
+  }
+  .hero-number-block .caption b { font-style: normal; font-weight: 600; }
+  .hero-number-block .source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 20px;
+  }
+
+  .problem-side {
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .problem-side .side-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .problem-side h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    margin-bottom: 18px;
+  }
+  .problem-side h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .problem-stats {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    margin-top: 6px;
+  }
+  .prob-stat {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    align-items: baseline;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .prob-stat:last-child { border-bottom: none; padding-bottom: 0; }
+  .prob-stat .big {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 0.9;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    min-width: 120px;
+  }
+  .prob-stat .big em { font-style: italic; color: var(--accent); }
+  .prob-stat .lbl {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink-3);
+  }
+  .prob-stat .lbl b { color: var(--ink); font-weight: 600; }
+
+  /* ============ SLIDE 04 · MARKET ============ */
+  .funnel-stack {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .funnel-bar {
+    display: flex; flex-direction: column;
+    gap: 2px;
+    padding: 16px 24px;
+    border-radius: 2px;
+    position: relative;
+  }
+  .funnel-bar.tam { background: var(--ink); color: var(--cream); width: 100%; }
+  .funnel-bar.sam { background: var(--accent); color: var(--cream); width: 82%; }
+  .funnel-bar.som { background: var(--sage); color: var(--cream); width: 64%; }
+  .funnel-bar .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    opacity: 0.65;
+    text-transform: uppercase;
+  }
+  .funnel-bar .amt {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .funnel-bar .amt em {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-left: 10px;
+  }
+  .market-note {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--hairline);
+    max-width: 580px;
+  }
+  .market-note b { font-style: normal; font-weight: 600; color: var(--accent); }
+
+  .competitor-matrix {
+    display: flex; flex-direction: column;
+    gap: 0;
+  }
+  .competitor-matrix .mh {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ink);
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .comp-row {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--hairline);
+    align-items: center;
+  }
+  .comp-row .name {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .comp-row .name em { font-style: italic; }
+  .comp-row .cell {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  .comp-row .yes { color: var(--sage); font-weight: 600; }
+  .comp-row .no { color: var(--rust); }
+  .comp-row.us {
+    background: linear-gradient(90deg, transparent 0%, var(--accent-soft) 50%, transparent 100%);
+    margin: 0 -12px;
+    padding: 12px 12px;
+    border: none;
+  }
+  .comp-row.us .name {
+    color: var(--accent);
+    font-weight: 600;
+    font-style: italic;
+  }
+  .comp-row.us .cell { color: var(--ink); font-weight: 500; }
+
+  /* ============ SLIDE 05 · SOLUTION ============ */
+  .solution-body {
+    padding: 78px 64px 52px;
+    display: flex; flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .solution-hook {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 12px;
+    margin-top: 4px;
+    max-width: 1080px;
+  }
+  .solution-hook em { font-style: italic; color: var(--accent); }
+  .solution-lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.45;
+    color: var(--ink-3);
+    max-width: 860px;
+    margin-bottom: 30px;
+  }
+  .ai-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    flex: 1;
+  }
+  .ai-card {
+    display: flex; flex-direction: column;
+    padding-top: 20px;
+    border-top: 2px solid var(--ink);
+    position: relative;
+  }
+  .ai-card .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .ai-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .ai-card h3 em { font-style: italic; color: var(--accent); }
+  .ai-card .kicker {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .ai-card .how {
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--ink-3);
+    padding-top: 12px;
+    border-top: 1px solid var(--hairline);
+    flex: 1;
+  }
+  .ai-card .how b { color: var(--ink); font-weight: 600; }
+  .ai-card .result {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline);
+    display: flex; align-items: baseline; gap: 14px;
+  }
+  .ai-card .result .r-v {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .ai-card .result .r-l {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ============ SLIDE 06 · TECHNICAL ============ */
+  .tech-layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 56px;
+    flex: 1;
+  }
+  .tech-diagram {
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .tech-steps {
+    display: flex; flex-direction: column;
+    gap: 0;
+    margin-top: 12px;
+  }
+  .tech-step {
+    display: grid;
+    grid-template-columns: 54px 1fr;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 7px 0;
+    border-top: 1px solid var(--hairline);
+    position: relative;
+  }
+  .tech-step:first-child { border-top: 2px solid var(--ink); }
+  .tech-step:last-child { border-bottom: 2px solid var(--ink); }
+  .tech-step .step-n {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 0.9;
+  }
+  .tech-step .step-n em { font-size: 14px; opacity: 0.6; }
+  .tech-step .step-t {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .tech-step .step-d {
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+  .tech-step .step-d b { color: var(--ink); }
+
+  .tech-side {
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .tech-side .side-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .tech-side h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 12px;
+  }
+  .tech-side h3 em { font-style: italic; color: var(--accent); }
+  .tech-side p {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .tech-side p b { color: var(--ink); font-weight: 600; }
+  .reg-pills {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 8px;
+  }
+  .reg-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 6px 12px;
+    background: var(--cream-2);
+    border: 1px solid var(--hairline);
+    border-radius: 20px;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .reg-pill.ok { background: var(--sage-soft); border-color: var(--sage); color: var(--sage); }
+  .reg-pill.accent { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-2); }
+
+  /* ============ SLIDE 07 · BUSINESS MODEL ============ */
+  .bm-hero {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 1020px;
+    margin-bottom: 10px;
+    margin-top: 8px;
+  }
+  .bm-hero em { font-style: italic; color: var(--accent); }
+  .bm-lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-3);
+    margin-bottom: 24px;
+    line-height: 1.45;
+    max-width: 900px;
+    font-weight: 400;
+  }
+  .bm-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr 1.1fr;
+    gap: 28px;
+    flex: 1;
+    align-items: stretch;
+  }
+  .bm-side {
+    padding: 22px 26px;
+    display: flex; flex-direction: column;
+    border-radius: 3px;
+  }
+  .bm-side.pay {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .bm-side.free {
+    background: var(--sage);
+    color: var(--cream);
+  }
+  .bm-side .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    opacity: 0.6;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .bm-side .who {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .bm-side .who em { font-style: italic; }
+  .bm-side .price-row {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(247,241,230,0.2);
+  }
+  .bm-side .price {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .bm-side .pu {
+    font-size: 11px;
+    opacity: 0.7;
+  }
+  .bm-side ul {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0;
+  }
+  .bm-side li {
+    font-size: 12.5px;
+    line-height: 1.55;
+    padding: 5px 0;
+    opacity: 0.92;
+    padding-left: 14px;
+    position: relative;
+  }
+  .bm-side li::before {
+    content: '→';
+    position: absolute;
+    left: 0; top: 5px;
+    opacity: 0.6;
+  }
+  .bm-arrow {
+    font-family: 'Fraunces', serif;
+    font-size: 60px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+    align-self: center;
+    line-height: 1;
+  }
+  .bm-econ {
+    padding: 22px 24px;
+    background: var(--cream-2);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    display: flex; flex-direction: column;
+  }
+  .bm-econ .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .bm-econ .econ-row {
+    display: flex; justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px dotted var(--hairline);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .bm-econ .econ-row:last-of-type { border-bottom: none; }
+  .bm-econ .econ-row .v { font-weight: 600; color: var(--ink); }
+  .bm-econ .total {
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 2px solid var(--ink);
+  }
+  .bm-econ .total .big {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .bm-econ .total .big-l {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  /* ============ SLIDE 08 · STRATEGIC FIT ============ */
+  .why-hero {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 1.03;
+    letter-spacing: -0.028em;
+    margin-bottom: 12px;
+    margin-top: 4px;
+    max-width: 1080px;
+  }
+  .why-hero em { font-style: italic; color: var(--accent); }
+  .why-lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink-3);
+    margin-bottom: 28px;
+    max-width: 880px;
+    line-height: 1.45;
+    font-weight: 400;
+  }
+  .why-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    flex: 1;
+    min-height: 0;
+  }
+  .why-pillar {
+    display: flex; flex-direction: column;
+    padding-top: 20px;
+    border-top: 2px solid var(--ink);
+  }
+  .why-pillar .p-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 72px;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 0.85;
+    margin-bottom: 6px;
+  }
+  .why-pillar h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 10px;
+  }
+  .why-pillar p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .why-pillar p b { color: var(--ink); font-weight: 600; }
+  .why-pillar .mini {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--hairline);
+    line-height: 1.5;
+  }
+  .why-pillar .mini b { color: var(--accent); font-weight: 600; }
+
+  /* ============ SLIDE 09 · FINANCIAL ============ */
+  .fin-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 56px;
+    flex: 1;
+  }
+  .fin-table-wrap { display: flex; flex-direction: column; }
+  .fin-table {
+    width: 100%; border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  .fin-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 10px;
+    text-align: right;
+    border-bottom: 2px solid var(--ink);
+    font-weight: 500;
+  }
+  .fin-table th:first-child { text-align: left; }
+  .fin-table td {
+    padding: 9px 10px;
+    text-align: right;
+    font-size: 13px;
+    color: var(--ink-3);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .fin-table td:first-child {
+    text-align: left;
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .fin-table tr.revenue td {
+    background: var(--accent-soft);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .fin-table tr.revenue td:first-child { color: var(--accent-2); font-style: italic; }
+  .fin-table tr.ebitda td {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 14px;
+    padding: 12px 10px;
+  }
+  .fin-table tr.ebitda td:first-child {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-style: italic;
+  }
+  .fin-cards {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+  }
+  .fin-card {
+    padding: 16px 20px;
+    border-left: 3px solid var(--accent);
+    background: var(--cream-2);
+  }
+  .fin-card .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .fin-card .vv {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+  }
+  .fin-card .vv em { font-style: italic; color: var(--accent); }
+  .fin-card .sub {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 5px;
+    line-height: 1.5;
+  }
+  .fin-assumptions {
+    padding-top: 18px;
+    margin-top: 8px;
+    border-top: 1px solid var(--hairline);
+  }
+  .fin-assumptions .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .fin-assumptions ul {
+    list-style: none;
+    padding: 0;
+  }
+  .fin-assumptions li {
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--ink-3);
+    padding: 3px 0 3px 14px;
+    position: relative;
+  }
+  .fin-assumptions li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* ============ SLIDE 10 · ROADMAP ============ */
+  .rm-hero {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    margin-bottom: 10px;
+    margin-top: 8px;
+    max-width: 1080px;
+  }
+  .rm-hero em { font-style: italic; color: var(--accent); }
+  .rm-lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-3);
+    margin-bottom: 26px;
+    line-height: 1.45;
+    max-width: 920px;
+    font-weight: 400;
+  }
+  .rm-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    flex: 1;
+    min-height: 0;
+  }
+  .rm-phase {
+    display: flex; flex-direction: column;
+    padding-top: 22px;
+    border-top: 2px solid var(--ink);
+    position: relative;
+  }
+  .rm-phase::before {
+    content: '';
+    position: absolute;
+    top: -7px; left: 0;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .rm-phase .ph-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .rm-phase h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .rm-phase h3 em { font-style: italic; color: var(--accent); }
+  .rm-phase .cost {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .rm-phase p {
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+  }
+  .rm-phase p b { color: var(--ink); font-weight: 600; }
+  .rm-phase .kpi {
+    margin-top: auto;
+    padding-top: 11px;
+    border-top: 1px solid var(--hairline);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--accent);
+    line-height: 1.4;
+  }
+
+  /* ============ SLIDE 11 · RISKS ============ */
+  .risk-hero {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    margin-bottom: 10px;
+    margin-top: 8px;
+    max-width: 1040px;
+  }
+  .risk-hero em { font-style: italic; color: var(--accent); }
+  .risk-lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-3);
+    margin-bottom: 22px;
+    line-height: 1.4;
+    max-width: 900px;
+    font-weight: 400;
+  }
+  .risk-list {
+    display: flex; flex-direction: column;
+    border-top: 2px solid var(--ink);
+    flex: 1;
+  }
+  .risk-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 1.3fr;
+    gap: 26px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--hairline);
+    align-items: baseline;
+  }
+  .risk-row:last-child { border-bottom: 2px solid var(--ink); }
+  .risk-row .r-cat {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .risk-row .r-risk {
+    font-size: 11.5px;
+    color: var(--ink-3);
+    line-height: 1.55;
+  }
+  .risk-row .r-risk b { color: var(--rust); font-weight: 600; }
+  .risk-row .r-fix {
+    font-size: 11.5px;
+    color: var(--ink);
+    line-height: 1.55;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+  }
+  .risk-row .r-fix b { color: var(--accent); font-weight: 600; }
+
+  /* ============ SLIDE 12 · IMPACT ============ */
+  .impact-hero {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    margin-bottom: 10px;
+    margin-top: 8px;
+    max-width: 1080px;
+  }
+  .impact-hero em { font-style: italic; color: var(--accent); }
+  .impact-lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-3);
+    margin-bottom: 24px;
+    line-height: 1.45;
+    max-width: 900px;
+    font-weight: 400;
+  }
+  .impact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    flex: 1;
+    min-height: 0;
+  }
+  .impact-levels {
+    display: flex; flex-direction: column;
+  }
+  .impact-level {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--hairline);
+    align-items: baseline;
+  }
+  .impact-level:first-child { border-top: 2px solid var(--ink); }
+  .impact-level:last-child { border-bottom: 2px solid var(--ink); }
+  .impact-level .n {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .impact-level h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  .impact-level p {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--ink-3);
+  }
+  .impact-level p b { color: var(--ink); font-weight: 600; }
+
+  .replication {
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .rep-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .rep-path {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .rep-node {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    padding: 8px 14px;
+    background: var(--cream-2);
+    border: 1px solid var(--hairline);
+    border-radius: 2px;
+    font-weight: 500;
+  }
+  .rep-node.now { background: var(--accent); color: var(--cream); border-color: var(--accent); font-style: italic; }
+  .rep-node.next { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .rep-arr { color: var(--accent); font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; }
+  .rep-vision {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink-3);
+    padding-top: 22px;
+    border-top: 1px solid var(--hairline);
+  }
+  .rep-vision b { font-style: normal; font-weight: 600; color: var(--ink); }
+  .rep-big {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    margin-top: 20px;
+  }
+  .rep-big em { font-style: italic; }
+  .rep-big-l {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+
+  /* ============ SLIDE 13 · CLOSING ============ */
+  .closing {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .closing::before {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+  }
+  .closing .chrome .brand { color: var(--cream); }
+  .closing .chrome .brand em { color: var(--accent); }
+  .closing .chrome .pager { color: rgba(247,241,230,0.5); }
+  .closing .chrome .pager b { color: var(--accent); }
+  .closing .chrome .brand-row .chap { background: rgba(232,80,28,0.25); color: var(--accent); }
+  .closing .chrome .brand-row .cat { color: var(--cream); }
+  .closing .chrome .brand-row.key .cat { color: var(--accent); }
+  .closing .chrome .tagline { color: var(--cream); }
+  .closing .chrome .tagline em { color: var(--accent); }
+  .closing-inner {
+    padding: 72px 72px 56px;
+    height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; z-index: 2;
+  }
+  .closing .eyebrow {
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+  .closing-title {
+    font-family: 'Fraunces', serif;
+    font-size: 96px;
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 22px;
+  }
+  .closing-title em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .closing-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: rgba(247,241,230,0.82);
+    max-width: 920px;
+    margin-bottom: 38px;
+    font-weight: 300;
+  }
+  .closing-sub b { color: var(--cream); font-weight: 400; font-style: normal; }
+  .closing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(247,241,230,0.2);
+  }
+  .closing-grid .c {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .closing-grid p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(247,241,230,0.88);
+    font-weight: 400;
+  }
+  .closing-grid p b { color: var(--cream); font-style: normal; font-weight: 500; }
+
+  /* Nav */
+  .nav-bar {
+    position: fixed; top: 14px; right: 14px; z-index: 999;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 10px 18px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    display: flex; gap: 10px; align-items: center;
+    box-shadow: 0 4px 20px rgba(10,31,68,0.3);
+    letter-spacing: 0.08em;
+  }
+  .nav-bar a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .nav-bar a:hover { color: var(--cream); }
+  .nav-bar .sep { color: rgba(247,241,230,0.3); }
+
+  /* ============ SECTION BANNER · Book-review emphasis ============ */
+  .section-banner {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 14px;
+    background: var(--ink);
+    color: var(--cream);
+    border-left: 6px solid var(--accent);
+    margin-bottom: 18px;
+    max-width: fit-content;
+  }
+  .section-banner .sb-num {
+    font-family: 'Fraunces', serif;
+    font-size: 28px; font-style: italic;
+    color: var(--accent); font-weight: 500;
+    line-height: 1;
+  }
+  .section-banner .sb-divider {
+    width: 1px; height: 24px; background: rgba(247,241,230,0.3);
+  }
+  .section-banner .sb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(247,241,230,0.7);
+    margin-bottom: 2px;
+  }
+  .section-banner .sb-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px; font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+  .section-banner .sb-title em {
+    font-style: italic; color: var(--accent);
+  }
+  .section-banner .sb-mark {
+    margin-left: 10px;
+    font-family: 'Fraunces', serif;
+    font-size: 10px; font-weight: 700;
+    background: var(--accent); color: var(--cream);
+    padding: 3px 8px; border-radius: 2px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  /* ============ SLIDE 02 · TABLE OF CONTENTS ============ */
+  .toc-body {
+    flex: 1;
+    padding: 80px 64px 48px;
+    display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .toc-hook {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    line-height: 1.06;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 8px;
+    max-width: 1100px;
+  }
+  .toc-hook em { font-style: italic; color: var(--accent); }
+  .toc-lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px; line-height: 1.5;
+    color: var(--ink-2); max-width: 1000px;
+    margin-bottom: 22px;
+  }
+  .toc-legend {
+    display: inline-flex; gap: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .toc-legend .dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent); margin-right: 6px;
+    vertical-align: middle;
+  }
+  .toc-legend .dot.ink { background: var(--ink); }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    flex: 1;
+    min-height: 0;
+  }
+  .toc-col {
+    background: var(--cream);
+    padding: 18px 22px 14px;
+    display: flex; flex-direction: column;
+  }
+  .toc-col .part {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .toc-col h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+  }
+  .toc-col h4 em { font-style: italic; color: var(--accent); }
+  .toc-list {
+    display: flex; flex-direction: column;
+    gap: 9px;
+  }
+  .toc-item {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    gap: 10px;
+    align-items: baseline;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-item .n {
+    font-family: 'Fraunces', serif;
+    font-size: 17px; font-style: italic;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .toc-item .t {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--ink-2);
+    font-weight: 400;
+  }
+  .toc-item .t b { color: var(--ink); font-weight: 600; }
+  .toc-item .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    background: var(--accent);
+    color: var(--cream);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .toc-item.key .n { color: var(--accent); }
+  .toc-item.key .t { color: var(--ink); }
+  .toc-item.key .t b { color: var(--accent); }
+  .toc-footer-note {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-weight: 400;
+    font-style: italic;
+  }
+  .toc-footer-note b { color: var(--accent); font-weight: 600; font-style: normal; }
+
+  @media print {
+    body { background: white; }
+    .deck { gap: 0; padding: 0; }
+    .slide { box-shadow: none; }
+    .nav-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-bar">
+  <a href="../index.html">← Portal</a>
+  <span class="sep">/</span>
+  <a href="proposal-zh.html">中文</a>
+  <span class="sep">/</span>
+  <span>ChainSight · EN</span>
+</div>
+
+<div class="deck">
+
+  <!-- ============ SLIDE 01 · COVER ============ -->
+  <section class="slide cover">
+    <div class="cover-inner">
+      <div class="cover-top">
+        <div class="cht-mark">
+          <span class="dot"></span>
+          <div class="label-stack">
+            <span class="name">Chunghwa Telecom · <em>AI-Enabled Business Competition</em></span>
+            <span class="team"><span class="lbl">Team</span><span class="nm">選中華一定隊</span></span>
+          </div>
+        </div>
+        <div class="meta">
+          FIRST-ROUND PROPOSAL<br>
+          2026 · MALAYSIA · VIETNAM · SINGAPORE
+        </div>
+      </div>
+
+      <div>
+        <h1 class="cover-title"><span class="chain">Chain</span><span class="sight">Sight</span></h1>
+        <p class="cover-sub">
+          A <b>supply-chain trust layer</b> that turns 4,000 small chip suppliers in Penang into real-time, audit-ready partners for the world's biggest chip makers — riding on cables and subsidiaries that only CHT owns.
+        </p>
+      </div>
+
+      <div class="cover-stats">
+        <div class="cover-stat">
+          <div class="k">The gap</div>
+          <div class="v">82<em>%</em></div>
+          <div class="k" style="margin-top:6px;font-family:'Manrope',sans-serif;text-transform:none;letter-spacing:0;">Small suppliers still on Excel</div>
+        </div>
+        <div class="cover-stat">
+          <div class="k">Reachable market</div>
+          <div class="v">$1.2<em>B</em></div>
+          <div class="k" style="margin-top:6px;font-family:'Manrope',sans-serif;text-transform:none;letter-spacing:0;">SE Asia chip corridor</div>
+        </div>
+        <div class="cover-stat">
+          <div class="k">Year-3 revenue</div>
+          <div class="v">$4.2<em>M</em></div>
+          <div class="k" style="margin-top:6px;font-family:'Manrope',sans-serif;text-transform:none;letter-spacing:0;">64% recurring · scales to $24M</div>
+        </div>
+        <div class="cover-stat">
+          <div class="k">Client return</div>
+          <div class="v">3.2<em>×</em></div>
+          <div class="k" style="margin-top:6px;font-family:'Manrope',sans-serif;text-transform:none;letter-spacing:0;">Payback on subscription</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 02 · TABLE OF CONTENTS ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">Guide</span>
+          <span class="cat">Table of Contents</span>
+        </div>
+        <div class="tagline">12 chapters in 3 parts — the <em>five core chapters</em> (market · product · business · moat · financials) are set in orange.</div>
+      </div>
+      <div class="pager"><b>02</b> / 14</div>
+    </div>
+    <div class="toc-body">
+      <h2 class="toc-hook">The whole deck on one page — <em>orange</em> marks the five core chapters.</h2>
+      <p class="toc-lede">
+        Three parts: why now (market), what we build (product &amp; model), why CHT wins and what it costs to get there. Five chapters — market, product, business model, moat, financials — are coloured <b style="color:var(--accent); font-style:normal;">orange</b> for reviewers who want to skim the argument in five slides.
+      </p>
+      <div class="toc-legend">
+        <span><span class="dot"></span> Core chapter (market / product / business / moat / financials)</span>
+        <span><span class="dot ink"></span> Context &amp; execution chapter</span>
+      </div>
+
+      <div class="toc-grid">
+        <div class="toc-col">
+          <div class="part">PART A · Why now</div>
+          <h4>An order <em>gap</em> in progress</h4>
+          <div class="toc-list">
+            <div class="toc-item">
+              <div class="n">01.</div>
+              <div class="t"><b>Executive Summary</b> — Penang's 4,000 suppliers invisible in real time</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">02.</div>
+              <div class="t"><b>Problem</b> — 82% still on Excel, 48h to answer a capacity question</div>
+              <div></div>
+            </div>
+            <div class="toc-item key">
+              <div class="n">03.</div>
+              <div class="t"><b>Market &amp; Moat</b> — $1.2B corridor + head-to-head competitor matrix</div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toc-col">
+          <div class="part">PART B · What we build</div>
+          <h4>The <em>product</em> &amp; model</h4>
+          <div class="toc-list">
+            <div class="toc-item key">
+              <div class="n">04.</div>
+              <div class="t"><b>Product / Solution</b> — Pulse · Predict · Comply, three AI agents</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">05.</div>
+              <div class="t"><b>Technical Architecture</b> — $240 edge box, data stays on site, CHT cable</div>
+              <div></div>
+            </div>
+            <div class="toc-item key">
+              <div class="n">06.</div>
+              <div class="t"><b>Business Model</b> — fabs pay, SMEs free, two-sided network</div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toc-col">
+          <div class="part">PART C · Why CHT wins</div>
+          <h4>Moat, <em>financials</em>, execution</h4>
+          <div class="toc-list">
+            <div class="toc-item key">
+              <div class="n">07.</div>
+              <div class="t"><b>CHT Moat</b> — cables + Malaysia subsidiary + ASE reference</div>
+              <div></div>
+            </div>
+            <div class="toc-item key">
+              <div class="n">08.</div>
+              <div class="t"><b>Financials</b> — break-even Year 3 Q4, $24M by Year 5</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">09–12.</div>
+              <div class="t"><b>Roadmap, Risks, Impact, Ask</b> — 18 months, $3M, 4 phases + risk register</div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Chapter numbers map to the top-left CH.XX tag on every slide · orange text marks the five core chapters (market · product · business · moat · financials)</div>
+      <div class="right">ChainSight · 02</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 03 · EXECUTIVE SUMMARY ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 01</span>
+          <span class="cat">Executive Summary</span>
+        </div>
+        <div class="tagline">Turn Penang's 4,000 suppliers into <em>real-time, audit-ready</em> partners for the fabs.</div>
+      </div>
+      <div class="pager"><b>03</b> / 14</div>
+    </div>
+    <div class="exec-body">
+      <div class="eyebrow accent">The one-slide story</div>
+      <h2 class="exec-hook">
+        When Intel asks a Penang supplier "what's your real capacity?", the answer takes <em>48 hours</em>.<br>
+        By then, the order has already gone to Vietnam.
+      </h2>
+      <p class="exec-lede">
+        Penang hosts 4,000 small chip-packaging suppliers serving Intel, ASE, Infineon and Inari — yet 82% still run on Excel and phone calls. Tier-one factories have no real-time view of supplier capacity or compliance. ChainSight closes that gap in under two seconds, across a data pipe that only CHT owns.
+      </p>
+
+      <div class="exec-grid">
+        <div class="exec-col">
+          <div class="num">i.</div>
+          <h3>A gap worth fixing</h3>
+          <p>Malaysia just pulled in <b>$15 billion</b> of new chip capex (Intel, Infineon, ASE). The factories are being built. But their <span class="hl">supplier visibility is still run on Excel</span>, and every missed order quietly migrates to Vietnam.</p>
+        </div>
+        <div class="exec-col">
+          <div class="num">ii.</div>
+          <h3>A fix that works</h3>
+          <p>Three AI helpers on one dashboard: <b>Pulse</b> watches the shop floor, <b>Predict</b> warns 7–14 days early, <b>Comply</b> turns two months of audits into one click. Big clients pay; small suppliers join free.</p>
+        </div>
+        <div class="exec-col">
+          <div class="num">iii.</div>
+          <h3>Only CHT can ship it</h3>
+          <p>No one else owns all three: <b>14 undersea cables</b> into Malaysia, a <b>brand-new Malaysia subsidiary</b> (Dec 2025), and a <span class="hl">proven smart-factory reference</span> already running at ASE. Competitors have at most one.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Market $1.2B · Year-3 revenue $4.2M · Year-5 $24M · Break-even Year 3 Q4 · 18-month budget $3M</div>
+      <div class="right">ChainSight · 03</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 04 · PROBLEM ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 02</span>
+          <span class="cat">Problem</span>
+        </div>
+        <div class="tagline">A 48-hour data gap — one missed PO at a time, <em>orders bleed to Vietnam</em>.</div>
+      </div>
+      <div class="pager"><b>04</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">The 48-hour data gap</div>
+      <div class="split-layout">
+        <div class="hero-number-block">
+          <div class="num">82<span class="pct">%</span></div>
+          <p class="caption">
+            of Penang's chip suppliers still track production with <b>Excel and a phone</b>. Not sensors. Not dashboards. <em>Excel.</em>
+          </p>
+          <div class="source">Source · MIDA &amp; MIDF Research 2024</div>
+        </div>
+
+        <div class="problem-side">
+          <div class="side-eyebrow">What this costs Taiwan</div>
+          <h2>A $15 billion factory boom <em>is colliding with</em> an Excel-era supply base.</h2>
+
+          <div class="problem-stats">
+            <div class="prob-stat">
+              <div class="big"><em>48</em>h</div>
+              <div class="lbl">Typical fab response time to the question <b>"what's your real capacity today?"</b> A single missed order costs ≈ $250K.</div>
+            </div>
+            <div class="prob-stat">
+              <div class="big">$15<em>B</em>+</div>
+              <div class="lbl">Fresh factory capex landing in Malaysia: <b>Intel $7B · Infineon €5B · Inari · ASE</b> — all hunting for suppliers they can actually see.</div>
+            </div>
+            <div class="prob-stat">
+              <div class="big">55<em>K</em></div>
+              <div class="lbl">Engineer shortfall: Malaysia needs 60K, produces 5K a year. <b>AI is the only way to close this gap.</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Why now · Malaysia's new factory law (NIMP 2030) + data privacy act (PDPA 2025) + CHT Malaysia subsidiary opened Dec 2025 — the window is 2025 to 2027</div>
+      <div class="right">ChainSight · 04</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 05 · MARKET & MOAT (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 03</span>
+          <span class="cat">Market &amp; Moat</span>
+        </div>
+        <div class="tagline">A $1.2B Southeast Asia corridor — <em>nobody else has wired it</em>.</div>
+      </div>
+      <div class="pager"><b>05</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">Market size &amp; the moat no one else has</div>
+      <h2 class="display" style="font-size: 42px; margin: 4px 0 10px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.02;">
+        A <em style="color:var(--accent)">$1.2 billion</em> corridor nobody else has wired.
+      </h2>
+      <p class="lede" style="font-size: 15px; margin-bottom: 22px; line-height: 1.45;">
+        We are not competing for the global $41B cloud market — we are building the only data pipe that actually reaches the small suppliers of Southeast Asia.
+      </p>
+
+      <div class="split-layout" style="grid-template-columns: 1fr 1.1fr; gap: 56px;">
+        <div>
+          <div class="funnel-stack">
+            <div class="funnel-bar tam">
+              <div class="tag">TOTAL</div>
+              <div class="amt">$41–65B <em>Global AI supply-chain · 2030</em></div>
+            </div>
+            <div class="funnel-bar sam">
+              <div class="tag">REACH</div>
+              <div class="amt">$1.2B <em>SE Asia chip cluster</em></div>
+            </div>
+            <div class="funnel-bar som">
+              <div class="tag">OUR TAKE</div>
+              <div class="amt">$4.2M <em>Year 3 · Penang first</em></div>
+            </div>
+          </div>
+          <p class="market-note">
+            Growing <b>18.5% a year</b> — 3× the global average. Every 1% more of Penang wired unlocks another $12M in annual revenue.
+          </p>
+        </div>
+
+        <div class="competitor-matrix">
+          <div class="mh">
+            <div>Who's playing</div>
+            <div>Reaches small suppliers?</div>
+            <div>Owns the data pipe?</div>
+            <div>Taiwan trust layer?</div>
+          </div>
+          <div class="comp-row">
+            <div class="name">SAP / Siemens</div>
+            <div class="cell no">✕ Big clients only</div>
+            <div class="cell no">✕ Cloud-dependent</div>
+            <div class="cell no">✕</div>
+          </div>
+          <div class="comp-row">
+            <div class="name">AWS / Azure</div>
+            <div class="cell no">✕ Self-serve only</div>
+            <div class="cell no">✕ Hyperscaler</div>
+            <div class="cell no">✕</div>
+          </div>
+          <div class="comp-row">
+            <div class="name">Singtel / NTT</div>
+            <div class="cell no">✕</div>
+            <div class="cell yes">✓ Singapore only</div>
+            <div class="cell no">✕</div>
+          </div>
+          <div class="comp-row">
+            <div class="name">FarEasTone / Taiwan Mobile</div>
+            <div class="cell no">✕</div>
+            <div class="cell no">✕ No SE Asia</div>
+            <div class="cell cell">— Taiwan only</div>
+          </div>
+          <div class="comp-row us">
+            <div class="name">ChainSight <em>(CHT)</em></div>
+            <div class="cell yes">✓ Subsidised free</div>
+            <div class="cell yes">✓ 14 cables</div>
+            <div class="cell yes">✓ Built-in</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Sources · Grand View Research 2024 · McKinsey SE Asia Digital 2024 · MIDA · SEMI · MIDF 2024</div>
+      <div class="right">ChainSight · 05</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 06 · PRODUCT / SOLUTION (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 04</span>
+          <span class="cat">Product &amp; Solution</span>
+        </div>
+        <div class="tagline">Three AI helpers, one dashboard — the shop floor becomes <em>one live signal</em>.</div>
+      </div>
+      <div class="pager"><b>06</b> / 14</div>
+    </div>
+    <div class="solution-body">
+      <div class="eyebrow accent">Three helpers, one dashboard</div>
+      <h2 class="solution-hook">
+        Three AI helpers that turn a factory floor into a <em>live signal</em> — in plain English.
+      </h2>
+      <p class="solution-lede">
+        No acronyms. No rip-and-replace. A $240 box plugs into whatever PLCs and cameras the supplier already owns, and within 72 hours the big client can see them in real time.
+      </p>
+
+      <div class="ai-cards">
+        <div class="ai-card">
+          <div class="role">01 · Watches</div>
+          <h3>Pulse<em>.</em></h3>
+          <div class="kicker">Live machine status, live yield, live delivery ETA — refreshed every second.</div>
+          <p class="how">
+            A small computer at each supplier <b>watches the machines</b>. It classifies every second as running, idle, faulted, or in maintenance. The big client sees one tile per supplier: "Line 3 at 87%, order #4471 on time for Monday 14:00."
+          </p>
+          <div class="result">
+            <div class="r-v">&lt; 2 s</div>
+            <div class="r-l">From factory floor<br>to fab dashboard</div>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="role">02 · Warns</div>
+          <h3>Predict<em>.</em></h3>
+          <div class="kicker">Machine failures spotted 7 to 14 days before they happen — so orders don't miss their deadline.</div>
+          <p class="how">
+            The same data feeds an AI that has <b>already learned from three years of ASE Taiwan production</b>. It flags a machine likely to break next week, and a material likely to run out, before anyone in the factory notices.
+          </p>
+          <div class="result">
+            <div class="r-v">85%</div>
+            <div class="r-l">Early-warning<br>accuracy target</div>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="role">03 · Proves</div>
+          <h3>Comply<em>.</em></h3>
+          <div class="kicker">Two months of audit work compressed into a single click, across three different laws.</div>
+          <p class="how">
+            An AI trained on real audit reports <b>writes the paperwork for you</b>: Malaysia's new privacy act, the responsible-business audit, Europe's supply-chain disclosure law. One click, one audit-ready PDF, bilingual.
+          </p>
+          <div class="result">
+            <div class="r-v">1 click</div>
+            <div class="r-l">Replaces 240 hours<br>of manual work</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">AI is essential because Malaysia is short 55,000 engineers — automation is the only way to close the gap</div>
+      <div class="right">ChainSight · 06</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 07 · TECHNICAL ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 05</span>
+          <span class="cat">Technical Architecture</span>
+        </div>
+        <div class="tagline">$240 edge box · raw data stays on site · rides <em>CHT's own cables</em> back to Taiwan.</div>
+      </div>
+      <div class="pager"><b>07</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">Built for the tropics, built for the law</div>
+      <h2 class="display" style="font-size: 36px; margin: 8px 0 8px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.08;">
+        A <em style="color:var(--accent)">$240 box</em>. Five steps. Your data never leaves the factory.
+      </h2>
+      <p class="lede" style="font-size: 14px; margin-bottom: 20px; line-height: 1.45;">
+        Designed around Southeast Asia's three hardest constraints — tropical heat, blocked 5G spectrum, Malaysia's new privacy law — not a generic cloud template.
+      </p>
+
+      <div class="tech-layout">
+        <div class="tech-diagram">
+          <div class="tech-steps">
+            <div class="tech-step">
+              <div class="step-n">01<em>.</em></div>
+              <div>
+                <div class="step-t">A small rugged computer</div>
+                <div class="step-d">An <b>$240 industrial box</b> (NVIDIA Jetson) with Wi-Fi 6, mobile backup, and an IP65 case that handles 40°C + humidity. Plugs into the sensors the supplier already owns.</div>
+              </div>
+            </div>
+            <div class="tech-step">
+              <div class="step-n">02<em>.</em></div>
+              <div>
+                <div class="step-t">AI runs on the factory floor</div>
+                <div class="step-d">Pulse and Predict run <b>inside the factory, not in the cloud</b>. Raw yield data, machine images, operator logs — none of it ever crosses the factory wall.</div>
+              </div>
+            </div>
+            <div class="tech-step">
+              <div class="step-n">03<em>.</em></div>
+              <div>
+                <div class="step-t">Only summary numbers travel</div>
+                <div class="step-d">The box sends a small encrypted packet (less than 2 KB) with status codes and KPIs. Everything else stays on the supplier's premises.</div>
+              </div>
+            </div>
+            <div class="tech-step">
+              <div class="step-n">04<em>.</em></div>
+              <div>
+                <div class="step-t">CHT's own pipes carry it</div>
+                <div class="step-d">The packet travels over <b>CHT's private network</b>, then a <b>CHT-owned undersea cable</b> to Taiwan — not AWS, not Azure, not a Chinese link.</div>
+              </div>
+            </div>
+            <div class="tech-step">
+              <div class="step-n">05<em>.</em></div>
+              <div>
+                <div class="step-t">Fab sees a live tile</div>
+                <div class="step-d">The big client opens a dashboard in CHT's own Taiwan data centre. Backed by the same security team that protects Taiwan's government systems.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tech-side">
+          <div class="side-label">The SE Asia constraints we designed around</div>
+          <h3>Three things <em>no generic cloud can solve.</em></h3>
+          <p>
+            <b>1 · No private 5G.</b> Malaysia's regulator gave 5G rights to a single local body, and foreign operators can't get spectrum. So we built the base layer on <b>Wi-Fi 6</b> — it works, it's cheap, it's legal everywhere in the region.
+          </p>
+          <p>
+            <b>2 · Data privacy fines hit in June 2025.</b> Malaysia's new law means a €1M-equivalent penalty for any raw production data that leaves the factory. Our answer: nothing leaves except summary KPIs.
+          </p>
+          <p>
+            <b>3 · Tropical conditions.</b> The hardware is sealed for 40°C + 85% humidity, has backup power, and keeps working for up to 72 hours if the connection drops.
+          </p>
+          <div class="reg-pills">
+            <span class="reg-pill ok">MY Privacy Act 2025</span>
+            <span class="reg-pill ok">MY Cyber Act 2024</span>
+            <span class="reg-pill ok">NIMP 2030</span>
+            <span class="reg-pill ok">EU CSRD</span>
+            <span class="reg-pill ok">RBA Audit 7.0</span>
+            <span class="reg-pill accent">VN · Wi-Fi only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Every tech choice traces back to a real SE Asia constraint — tropical climate, blocked 5G spectrum, Malaysian privacy law, or Taiwan supply-chain policy</div>
+      <div class="right">ChainSight · 07</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 08 · BUSINESS MODEL (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 06</span>
+          <span class="cat">Business Model</span>
+        </div>
+        <div class="tagline">Fabs pay. Suppliers onboard <em>free</em>. A two-sided network only CHT can seed.</div>
+      </div>
+      <div class="pager"><b>08</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">How money flows</div>
+      <h2 class="bm-hero">Big clients pay. Small suppliers deploy <em>free.</em></h2>
+      <p class="bm-lede">
+        Fabs pay a monthly seat fee for supplier visibility. That subsidises free installation for the small suppliers. Every new fab contract onboards 20–40 more suppliers. The network gets denser. The pipe gets stickier.
+      </p>
+
+      <div class="bm-grid">
+        <div class="bm-side pay">
+          <div class="role">Side A · Pays</div>
+          <div class="who">Big chip<br>makers<em>.</em></div>
+          <div class="price-row">
+            <div class="price">$5–15K</div>
+            <div class="pu">per factory<br>per month</div>
+          </div>
+          <ul>
+            <li>Intel Malaysia, ASE, Infineon Kulim, Inari</li>
+            <li>Seat tier scales with number of suppliers watched</li>
+            <li>Enterprise plan adds the automatic audit report</li>
+          </ul>
+        </div>
+
+        <div class="bm-arrow">⇄</div>
+
+        <div class="bm-side free">
+          <div class="role">Side B · Free</div>
+          <div class="who">Small<br>suppliers<em>.</em></div>
+          <div class="price-row">
+            <div class="price">$0</div>
+            <div class="pu">upfront · hardware<br>lease bundled</div>
+          </div>
+          <ul>
+            <li>Supplier only pays after winning a new order through the platform</li>
+            <li>CHT provides the box on a 2-year lease, recovered from fab fees</li>
+            <li>Success model: 3% of new revenue unlocked</li>
+          </ul>
+        </div>
+
+        <div class="bm-econ">
+          <div class="role">Unit economics · per supplier per year</div>
+          <div class="econ-row"><div>Fab-side share</div><div class="v">$3,600</div></div>
+          <div class="econ-row"><div>Supplier success fee</div><div class="v">$1,200</div></div>
+          <div class="econ-row"><div>Hardware lease</div><div class="v">−$600</div></div>
+          <div class="econ-row"><div>Cloud &amp; support</div><div class="v">−$1,200</div></div>
+          <div class="econ-row"><div>Sales &amp; partner</div><div class="v">−$540</div></div>
+          <div class="total">
+            <div class="big">$2,460</div>
+            <div class="big-l">Net contribution · 51% gross margin</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Payback per supplier 7.4 months · LTV / CAC ≈ 4.8× · Gross margin scales to 66% by Year 5 as cloud costs spread across 260 suppliers</div>
+      <div class="right">ChainSight · 08</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 09 · CHT MOAT (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 07</span>
+          <span class="cat">CHT Moat</span>
+        </div>
+        <div class="tagline">Cables + Malaysia subsidiary + ASE reference — <em>only CHT holds all three at once</em>.</div>
+      </div>
+      <div class="pager"><b>09</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">The case for Chunghwa Telecom</div>
+      <h2 class="why-hero">This is CHT's game <em>to win</em> — and nobody else's to play.</h2>
+      <p class="why-lede">
+        Every Taiwanese telecom has some of the parts. Only CHT has all three. Here are the pillars ChainSight weaponises.</p>
+
+      <div class="why-pillars">
+        <div class="why-pillar">
+          <div class="p-num">i<em>.</em></div>
+          <h3>14 undersea cables<br>into SE Asia</h3>
+          <p>
+            CHT owns or co-owns more international cables landing in Malaysia, Singapore and Vietnam than <b>any other Taiwanese company</b>. That pipe is our trust layer — a route from a Penang factory to a Taiwanese HQ that goes through neither China nor the US.
+          </p>
+          <div class="mini"><b>Used as</b> the backbone under every ChainSight data packet</div>
+        </div>
+        <div class="why-pillar">
+          <div class="p-num">ii<em>.</em></div>
+          <h3>A Malaysia subsidiary<br>opened December 2025</h3>
+          <p>
+            CHT Malaysia Sdn. Bhd. is less than six months old. It is the <b>first Taiwanese telecom</b> with a legal vehicle to sell, bill, support and employ on the ground in Penang. Nothing on the plan works without it — and nobody else has it.
+          </p>
+          <div class="mini"><b>Used as</b> the local business vehicle + field engineering team</div>
+        </div>
+        <div class="why-pillar">
+          <div class="p-num">iii<em>.</em></div>
+          <h3>A smart-factory reference<br>already running at ASE</h3>
+          <p>
+            CHT already operates a private 5G network, AGV fleet and AOI camera stack at <b>ASE Taiwan</b>. ASE is also Penang's largest chip-packaging plant. Phase 1 of ChainSight is a <b>transfer</b>, not a new sale.
+          </p>
+          <div class="mini"><b>Used as</b> the Year-1 anchor customer — zero sales cycle</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Revenue back to CHT Group · $4.2M Year 3 → $24M Year 5 · Every dollar is also a CHT connectivity + security + data-centre dollar. Zero cannibalisation.</div>
+      <div class="right">ChainSight · 09</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 10 · FINANCIAL (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 08</span>
+          <span class="cat">Financials</span>
+        </div>
+        <div class="tagline">Break even Year 3 Q4 · <em>$24M revenue · 66% gross margin</em> by Year 5.</div>
+      </div>
+      <div class="pager"><b>10</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">Five-year outlook · conservative base case</div>
+      <h2 class="display" style="font-size: 44px; margin: 4px 0 10px; font-weight: 500; line-height: 1.02; letter-spacing: -0.03em;">
+        Break even Year 3. <em style="color:var(--accent)">$24M</em> by Year 5.
+      </h2>
+      <p class="lede" style="font-size: 15px; margin-bottom: 22px; line-height: 1.45;">
+        No government grants. No 5G spectrum. No subsidies. Pure base case — and still profitable.
+      </p>
+
+      <div class="fin-layout">
+        <div class="fin-table-wrap">
+          <table class="fin-table">
+            <thead>
+              <tr>
+                <th>$USD million</th>
+                <th>Y1</th>
+                <th>Y2</th>
+                <th>Y3</th>
+                <th>Y4</th>
+                <th>Y5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Small suppliers</td><td>3</td><td>30</td><td>80</td><td>160</td><td>260</td></tr>
+              <tr><td>Fab dashboards</td><td>1</td><td>3</td><td>5</td><td>8</td><td>12</td></tr>
+              <tr class="revenue"><td>Total revenue</td><td>0.28</td><td>1.30</td><td>4.20</td><td>10.8</td><td>24.0</td></tr>
+              <tr><td>Cost of delivery</td><td>−0.35</td><td>−0.78</td><td>−1.68</td><td>−4.10</td><td>−8.16</td></tr>
+              <tr><td>Gross margin</td><td>—</td><td>40%</td><td>60%</td><td>62%</td><td>66%</td></tr>
+              <tr><td>Operating costs</td><td>−0.55</td><td>−0.92</td><td>−1.60</td><td>−3.10</td><td>−5.40</td></tr>
+              <tr class="ebitda"><td>Operating profit</td><td>−0.62</td><td>−0.40</td><td>+0.92</td><td>+3.60</td><td>+10.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fin-cards">
+          <div class="fin-card">
+            <div class="lbl">Break-even</div>
+            <div class="vv">Year <em>3</em> Q4</div>
+            <div class="sub">After cumulative investment of $3.4M. Cash break-even six months later.</div>
+          </div>
+          <div class="fin-card" style="border-left-color: var(--sage)">
+            <div class="lbl">Year-5 margin</div>
+            <div class="vv"><em>66%</em> GM</div>
+            <div class="sub">Spread across 260 suppliers. Supplier success fees are near-zero marginal cost.</div>
+          </div>
+          <div class="fin-assumptions">
+            <div class="label">Key assumptions</div>
+            <ul>
+              <li>ASE Penang confirmed as Year-1 anchor</li>
+              <li>$10K average monthly fab fee (mid of $5–15K band)</li>
+              <li>Supplier churn ≤ 8% a year</li>
+              <li>Vietnam begins Year 3 via Viettel partnership</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Upside not modelled · NIMP grant potential ~$1.5M · Comply premium pricing · Vietnam ramp acceleration</div>
+      <div class="right">ChainSight · 10</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 11 · ROADMAP ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 09</span>
+          <span class="cat">Roadmap</span>
+        </div>
+        <div class="tagline">$3M · 18 months · 4 phases — <em>Phase 1 is a reference transfer, not a new sale</em>.</div>
+      </div>
+      <div class="pager"><b>11</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">18 months · 4 phases · 1 anchor already in hand</div>
+      <h2 class="rm-hero">$3 million. 18 months.<br>Phase 1 is a <em>transfer</em>, not a sale.</h2>
+      <p class="rm-lede">
+        The anchor customer — ASE — is already a CHT customer in Taiwan. We are not selling into a new relationship; we are extending an existing one across the Strait.
+      </p>
+
+      <div class="rm-track">
+        <div class="rm-phase">
+          <div class="ph-label">Phase 01 · Months 1–6</div>
+          <h3>Anchor &amp; <em>Pulse</em></h3>
+          <div class="cost">$900K · Penang</div>
+          <p>Ship Pulse on 3 ASE-Penang suppliers. Stand up the Fab Portal for ASE. <b>Team of 12</b>, half in Taipei, half in Penang.</p>
+          <div class="kpi">→ 3 suppliers live. Under 2 s latency. ASE contract signed.</div>
+        </div>
+
+        <div class="rm-phase">
+          <div class="ph-label">Phase 02 · Months 7–12</div>
+          <h3>Predict &amp; <em>scale</em></h3>
+          <div class="cost">$1.2M · Penang + Kulim</div>
+          <p>Launch Predict. Sign Intel Malaysia or Infineon as the second anchor. Scale the supplier base to <b>30</b>.</p>
+          <div class="kpi">→ 30 suppliers. 85% prediction accuracy. $1.2M annual revenue.</div>
+        </div>
+
+        <div class="rm-phase">
+          <div class="ph-label">Phase 03 · Months 13–18</div>
+          <h3>Comply &amp; <em>Penang</em></h3>
+          <div class="cost">$900K · Penang full</div>
+          <p>Ship Comply. 5 fab dashboards live, <b>80 suppliers onboarded</b>. Break-even achieved; self-funded from here on.</p>
+          <div class="kpi">→ 80 suppliers. 5 fabs. $4.2M annual revenue.</div>
+        </div>
+
+        <div class="rm-phase">
+          <div class="ph-label">Phase 04 · Months 19–30</div>
+          <h3>Vietnam &amp; <em>Singapore</em></h3>
+          <div class="cost">Self-funded</div>
+          <p>Replicate the playbook via the Viettel partnership (Amkor, Hana Micron) and Singapore lighthouse accounts (GlobalFoundries, Micron).</p>
+          <div class="kpi">→ $10.8M annual revenue. 3-country footprint.</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Team growth 12 → 20 → 32 FTE · Hardware capex $420K cumulative · $3M total 18-month investment</div>
+      <div class="right">ChainSight · 11</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 12 · RISKS ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 10</span>
+          <span class="cat">Risks &amp; Mitigations</span>
+        </div>
+        <div class="tagline">Five material risks with <em>named owners</em> and mitigations already scheduled in the 18-month plan.</div>
+      </div>
+      <div class="pager"><b>12</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">Material risks and mitigations</div>
+      <h2 class="risk-hero">Five material risks, <em>each with a planned mitigation.</em></h2>
+      <p class="risk-lede">
+        The five risks below span regulation, customer value, technology, and integration. Each has a named owner and a concrete mitigation already scheduled in the 18-month plan.
+      </p>
+
+      <div class="risk-list">
+        <div class="risk-row">
+          <div class="r-cat">5G spectrum</div>
+          <div class="r-risk">Malaysia's regulator gave 5G rights to a single local body. <b>Foreign operators cannot get spectrum.</b> A "5G smart factory" story would be dead on arrival.</div>
+          <div class="r-fix"><b>Wi-Fi 6 is the base layer.</b> 5G is an optional upgrade via a local partnership with Celcom. Nothing in the product depends on CHT owning Malaysian spectrum.</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="r-cat">Data privacy</div>
+          <div class="r-risk">Malaysia's new privacy act (June 2025) makes raw production data leaving the factory a <b>seven-figure fine</b>. Chip-maker NDAs are even stricter.</div>
+          <div class="r-fix"><b>Raw data never leaves the plant.</b> Only anonymised summary numbers travel — and only over CHT's own cables. We appointed a data-protection officer in the Malaysia subsidiary from day one.</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="r-cat">Why pay</div>
+          <div class="r-risk">Will a big chip factory actually pay $5–15K a month? The procurement team needs a number that clears the hurdle rate.</div>
+          <div class="r-fix"><b>3.2× return.</b> Four missed orders a year × $250K each = $1M of loss avoided. Subscription is $120K a year. The math clears procurement on the first pass.</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="r-cat">AI cold-start</div>
+          <div class="r-risk">A brand-new supplier has no historical data. How does the AI work on day one?</div>
+          <div class="r-fix"><b>We pre-trained on three years of ASE Taiwan data</b> — 18 million labelled events. A new supplier warms up in 72 hours on that model and fine-tunes on local data after 30 days.</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="r-cat">ERP integration</div>
+          <div class="r-risk">Connecting to SAP or Oracle is slow, expensive, and the talent is scarce. A big chunk of the budget could disappear there.</div>
+          <div class="r-fix"><b>Phase 1–3 does not touch ERP.</b> We read directly from the factory-floor controllers. ERP connectors are a Phase 5 upsell through system-integrator partners.</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">The full risk register is maintained jointly by CHT Malaysia's DPO and the ChainSight operations lead, and is reviewed each quarter</div>
+      <div class="right">ChainSight · 12</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 13 · IMPACT ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 11</span>
+          <span class="cat">Impact &amp; Scale</span>
+        </div>
+        <div class="tagline">Same playbook, copied <em>across the Southeast Asia corridor</em> — $24M by Year 5.</div>
+      </div>
+      <div class="pager"><b>13</b> / 14</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">Beyond revenue — strategic outcomes</div>
+      <h2 class="impact-hero">One playbook, replicated across <em>Southeast Asia's</em> chip corridor.</h2>
+      <p class="impact-lede">
+        Every additional market reuses the same three AI helpers, the same CHT data pipe, the same pricing model. The third market onboards 70% cheaper than the first.
+      </p>
+
+      <div class="impact-layout">
+        <div class="impact-levels">
+          <div class="impact-level">
+            <div class="n">01<em>.</em></div>
+            <div>
+              <h4>For the suppliers</h4>
+              <p>Every supplier that joins sees <b>12% more machine uptime</b>, <b>half the unplanned stops</b>, <b>30–40% of inventory cash freed up</b>, and access to bigger orders through fab visibility. Hardware is free — no capital barrier.</p>
+            </div>
+          </div>
+          <div class="impact-level">
+            <div class="n">02<em>.</em></div>
+            <div>
+              <h4>For the big chip makers</h4>
+              <p>Each fab gains <b>real-time visibility across its entire supplier base</b>, replacing 48-hour phone trees with live dashboards. 3.2× return on subscription. EU supply-chain reporting becomes defensible and auditable.</p>
+            </div>
+          </div>
+          <div class="impact-level">
+            <div class="n">03<em>.</em></div>
+            <div>
+              <h4>For CHT and Taiwan</h4>
+              <p>CHT becomes the <b>de-facto trust layer</b> for Taiwan's overseas supply chains — an economic-security asset. Locks Taiwan's chip packagers (ASE, Powertech, KYEC, ChipMOS) into CHT-managed connectivity for a decade.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="replication">
+          <div class="rep-label">The expansion path</div>
+          <div class="rep-path">
+            <div class="rep-node now">Penang</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node">Kedah</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node">Johor</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node next">Hanoi</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node next">HCMC</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node">Singapore</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node">Thailand</div>
+          </div>
+          <p class="rep-vision">
+            Same three AI helpers. Same CHT pipe. Same pricing. <b>The third market onboards 70% cheaper than the first</b>, because the hardware SKU, the security playbook, and the models are already productised.
+          </p>
+          <div class="rep-big">$24M · 260 suppliers · 12 fabs</div>
+          <div class="rep-big-l">Year-5 target · 3-country footprint · 66% gross margin</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">Long-term option value · Same platform can extend to EV battery supply chains (Thailand, Indonesia) and pharma contract manufacturers (Singapore)</div>
+      <div class="right">ChainSight · 13</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 14 · CLOSING ============ -->
+  <section class="slide closing">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 12</span>
+          <span class="cat">The Ask</span>
+        </div>
+        <div class="tagline">$3M · 18 months · one green light — <em>we already have the pipe and the customer</em>.</div>
+      </div>
+      <div class="pager"><b>14</b> / 14</div>
+    </div>
+    <div class="closing-inner">
+      <div>
+        <div class="eyebrow">The ask</div>
+        <h2 class="closing-title">
+          $3 million. <em>18 months.</em><br>One green light.
+        </h2>
+        <p class="closing-sub">
+          ChainSight turns CHT's cables, Malaysia subsidiary, Viettel partnership, and ASE reference into the <b>only credible data trust layer</b> for Taiwan's relocating chip supply chain. We already own the pipe. We already have the customer. We just need the word "go."
+        </p>
+      </div>
+
+      <div class="closing-grid">
+        <div>
+          <div class="c">Innovation</div>
+          <p>A two-sided AI business model sitting on a <b>telecom moat</b>. No Taiwanese or global competitor has all three layers.</p>
+        </div>
+        <div>
+          <div class="c">Feasibility</div>
+          <p>ASE is already a CHT customer in Taiwan. Phase 1 is a <b>transfer</b>, not a new sale.</p>
+        </div>
+        <div>
+          <div class="c">Impact</div>
+          <p><b>$24M annual revenue by Year 5</b>, securing Taiwan's chip supply chain under CHT's own pipe.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
