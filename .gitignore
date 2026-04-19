@@ -1,5 +1,7 @@
+.claude/
 .DS_Store
 .memsearch/
 .meridian/
 *.backup.html
+*.log
 node_modules/
