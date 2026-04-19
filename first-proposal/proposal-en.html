@@ -1799,6 +1799,145 @@
   .ref-lede { display: none; }
   .ref-note { display: none; }
   .reg-pills { display: none; }
+
+  /* ============ Slide 05 · Redesigned Market Opportunity ============ */
+  .opp-sub {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-3);
+    max-width: 920px;
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+  .opp-sub b { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  .opp-keys-v2 {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 0;
+    flex: 1;
+    align-items: stretch;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 22px 0;
+  }
+  .opp-key-v2 {
+    padding: 0 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  .opp-key-v2:first-child { padding-left: 0; }
+  .opp-key-v2:last-child { padding-right: 0; }
+  .opp-key-v2 .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .opp-key-v2 h3 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .opp-key-v2 h3 em { color: var(--accent); }
+  .opp-key-v2 p {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink-3);
+  }
+  .opp-key-v2 p b { color: var(--ink); font-weight: 600; }
+  .opp-key-v2-divider {
+    width: 1px;
+    background: var(--hairline);
+    align-self: stretch;
+  }
+
+  .opp-proof-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    gap: 24px;
+    margin-top: 24px;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--hairline);
+    align-items: start;
+  }
+  .opp-proof-stat .v {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .opp-proof-stat .v em { color: var(--accent); }
+  .opp-proof-stat .l {
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--ink-3);
+    margin-top: 6px;
+  }
+  .opp-proof-stat .l b { color: var(--ink); font-weight: 600; }
+
+  .opp-proof-geo {
+    padding-left: 20px;
+    border-left: 2px solid var(--ink);
+  }
+  .geo-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .geo-path {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .geo-now {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cream);
+    background: var(--accent);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .geo-next {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--cream);
+    background: var(--ink);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .geo-future {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--cream-2);
+    border: 1px solid var(--hairline);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .geo-arr {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 13px;
+    color: var(--accent);
+  }
 </style>
 </head>
 <body>
@@ -2157,7 +2296,7 @@
     </div>
   </section>
 
-  <!-- ============ SLIDE 05 · MARKET OPPORTUNITY (NEW) ============ -->
+  <!-- ============ SLIDE 05 · MARKET OPPORTUNITY (REDESIGNED) ============ -->
   <section class="slide">
     <div class="chrome">
       <div class="brand-group">
@@ -2165,79 +2304,59 @@
           <span class="chap">CH. 02</span>
           <span class="cat">Market Opportunity</span>
         </div>
-        <div class="tagline">CHT's Malaysia subsidiary (Dec 2025), the 5G-A MoU, and the 2026 NIA incentives — three things <em>lined up at the same time</em>.</div>
+        <div class="tagline">Three things lined up at the same time — and only CHT has all three.</div>
       </div>
       <div class="pager"><b>05</b> / 16</div>
     </div>
     <div class="opp-body">
-      <div class="eyebrow accent">Why 2026, and why through a Taiwanese lens</div>
-      <h2 class="opp-hook">"<em>Where Taiwanese companies go, CHT goes.</em>" Three keys turn together: a local subsidiary, an AI-native network, and Malaysia's new incentives.</h2>
-      <p class="opp-lede">
-        Malaysia is the <b>9th largest destination for Taiwanese manufacturing investment</b> (US$16.22B cumulative) and the 3rd largest foreign employer. Taiwanese firms cluster in <b>electronics, metal processing, and industrial machinery</b> — exactly the sectors that need quality-control AI and precise inventory. We don't need to sell the market on AI; we just need to plug in the pipe.
-      </p>
+      <div class="eyebrow accent">Why 2026, and why only CHT</div>
+      <h2 class="opp-hook">"<em>Where Taiwanese companies go, CHT goes.</em>"</h2>
+      <p class="opp-sub">Taiwanese firms are the <b>3rd-largest foreign employer</b> in Malaysia, clustered in electronics and industrial machinery — exactly the sectors that need factory-floor AI. We don't need to create demand. We just need to plug in.</p>
 
-      <div class="opp-keys">
-        <div class="opp-key">
-          <div class="tag">KEY 01 · Local entity</div>
-          <h3>CHT Malaysia subsidiary, <em>Dec 1, 2025</em></h3>
-          <p>The Kuala Lumpur office was upgraded to <b>Chunghwa Telecom Malaysia Sdn. Bhd.</b> — the first Taiwanese telco with a local entity that can sell, bill, support and hire on the ground. Without it, the project cannot land.</p>
+      <div class="opp-keys-v2">
+        <div class="opp-key-v2">
+          <div class="tag">KEY 01 · On the ground</div>
+          <h3>CHT Malaysia subsidiary<br><em>Dec 1, 2025</em></h3>
+          <p>First Taiwanese telco with a local entity that can <b>sell, bill, support and hire</b> in Malaysia. Without it, the project cannot land.</p>
         </div>
-        <div class="opp-key">
-          <div class="tag">KEY 02 · AI-Native network</div>
-          <h3>5G-Advanced + <em>AI smart network</em> MoU</h3>
-          <p>At MWC 2026, CHT signed a 5G-A and AI smart-network MoU with <b>Nokia and Ericsson</b>. The AI-Native architecture is what keeps edge-AI workloads stable under a $3M budget — no competitor can match this combination.</p>
+        <div class="opp-key-v2-divider"></div>
+        <div class="opp-key-v2">
+          <div class="tag">KEY 02 · The pipe</div>
+          <h3>14 undersea cables<br><em>into Southeast Asia</em></h3>
+          <p>CHT operates the physical data layer — <b>submarine cables landing in Malaysia, Singapore, and Vietnam</b>. No other Taiwanese telco has infrastructure in-country.</p>
         </div>
-        <div class="opp-key">
-          <div class="tag">KEY 03 · NIA incentives</div>
-          <h3>Malaysia's <em>new investment incentives</em>, 2026</h3>
-          <p>AI-enabled manufacturing sits in the 15 <b>core categories</b>, scored across <b>six axes</b> (economic complexity, quality jobs, supply-chain linkage, clusters, inclusion, ESG). ChainSight hits all six, qualifying for the top tier.</p>
+        <div class="opp-key-v2-divider"></div>
+        <div class="opp-key-v2">
+          <div class="tag">KEY 03 · Policy tailwind</div>
+          <h3>Malaysia NIA incentives<br><em>top tier, 2026</em></h3>
+          <p>AI-enabled manufacturing qualifies for <b>the highest NIA incentive tier</b> — tax breaks, hiring subsidies, and fast-track approvals.</p>
         </div>
       </div>
 
-      <div class="opp-lower">
-        <div class="opp-cluster">
-          <h4>Where Taiwanese firms cluster in Malaysia</h4>
-          <div class="opp-cluster-grid">
-            <div class="opp-region">
-              <div class="city">Penang</div>
-              <div class="role">Chip packaging &amp; test</div>
-              <div class="desc"><b>13% of global chip packaging</b>, 6th-largest chip exporter. Intel / ASE / Infineon / Inari are here. <b>Phase 1 anchor</b>.</div>
-            </div>
-            <div class="opp-region">
-              <div class="city">Selangor</div>
-              <div class="role">Assembly &amp; logistics</div>
-              <div class="desc">Regional hub for Taiwanese electronics assembly and logistics. Direct need for <b>inventory and quality-control AI</b>. Phase 2 expansion.</div>
-            </div>
-            <div class="opp-region">
-              <div class="city">Johor</div>
-              <div class="role">Data centre · SG link</div>
-              <div class="desc">Capacity <b>10MW → 1,500MW</b> from 2020 to 2024. Compute hub connected to Singapore; CHT cables land here. Phase 3–4 hub.</div>
-            </div>
-          </div>
+      <div class="opp-proof-bar">
+        <div class="opp-proof-stat">
+          <div class="v">$<em>16.2</em>B</div>
+          <div class="l">Taiwanese cumulative<br>manufacturing investment</div>
         </div>
-
-        <div class="opp-tw">
-          <div class="tw-label">Taiwanese firms · why the demand is already there</div>
-          <h4>3rd-largest foreign employer, 9th-largest manufacturing investor — <em>our first customers are already in Malaysia</em>.</h4>
-          <div class="opp-tw-stats">
-            <div class="opp-tw-stat">
-              <div class="v">$<em>16.2</em>B</div>
-              <div class="l">Taiwanese <b>cumulative manufacturing investment</b> (Q3 2025)</div>
-            </div>
-            <div class="opp-tw-stat">
-              <div class="v">#<em>3</em></div>
-              <div class="l">Taiwanese as <b>foreign employer</b> (behind SG and Japan)</div>
-            </div>
-            <div class="opp-tw-stat">
-              <div class="v">8.3<em>%</em></div>
-              <div class="l">Chip-equipment market <b>CAGR from 2026</b></div>
-            </div>
-            <div class="opp-tw-stat">
-              <div class="v">325<em> firms</em></div>
-              <div class="l">Malaysian AI firms exporting to <b>27 countries</b>, $1.03B in 2024</div>
-            </div>
+        <div class="opp-proof-stat">
+          <div class="v">#<em>3</em></div>
+          <div class="l">Taiwanese rank as<br>foreign employer</div>
+        </div>
+        <div class="opp-proof-stat">
+          <div class="v">8.3<em>%</em></div>
+          <div class="l">Chip-equipment market<br>CAGR from 2026</div>
+        </div>
+        <div class="opp-proof-geo">
+          <div class="geo-label">Rollout path</div>
+          <div class="geo-path">
+            <span class="geo-now">Penang</span>
+            <span class="geo-arr">→</span>
+            <span class="geo-next">Selangor</span>
+            <span class="geo-arr">→</span>
+            <span class="geo-next">Johor</span>
+            <span class="geo-arr">→</span>
+            <span class="geo-future">Vietnam · Thailand</span>
           </div>
-          <p>The Malaysian and Singaporean governments <b>have a shared plan</b> — transport, industrial policy, even e-invoicing integration. Firms in <em>green energy, digital cloud and AI</em> can ride that tailwind. ChainSight is already on that tailwind.</p>
         </div>
       </div>
     </div>
