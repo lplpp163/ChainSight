@@ -1175,7 +1175,7 @@
     font-weight: 500;
     line-height: 1.05;
     letter-spacing: -0.022em;
-    margin-bottom: 10px;
+    margin-bottom: 28px;
     margin-top: 8px;
     max-width: 1080px;
   }
@@ -1206,15 +1206,15 @@
   .rm-phase::before {
     content: '';
     position: absolute;
-    top: -7px; left: 0;
+    top: -6px; left: 0;
     width: 12px; height: 12px;
     border-radius: 50%;
     background: var(--accent);
   }
   .rm-phase .ph-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
+    font-size: 11px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 6px;
@@ -1230,11 +1230,24 @@
   }
   .rm-phase h3 em { font-style: italic; color: var(--accent); }
   .rm-phase .cost {
-    font-family: 'Source Serif 4', Georgia, serif;
-    font-style: italic;
-    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
     color: var(--accent);
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+  }
+  .rm-phase.primary {
+    padding-top: 23px;
+    border-top: 3px solid var(--accent);
+  }
+  .rm-phase.primary::before {
+    width: 16px; height: 16px; top: -9px;
+    box-shadow: 0 0 0 5px rgba(232,80,28,0.18);
+  }
+  .rm-phase.primary h3 {
+    font-size: 25px;
   }
   .rm-phase p {
     font-size: 12.5px;
@@ -1244,7 +1257,7 @@
   }
   .rm-phase p b { color: var(--ink); font-weight: 600; }
   .rm-phase .kpi {
-    margin-top: auto;
+    margin-top: 14px;
     padding-top: 11px;
     border-top: 1px solid var(--hairline);
     font-family: 'Source Serif 4', Georgia, serif;
@@ -2851,24 +2864,21 @@
           <span class="chap">CH. 09</span>
           <span class="cat">Roadmap</span>
         </div>
-        <div class="tagline">Phase 1 is a reference transfer, not a new sale.</div>
+        <div class="tagline">$3M · 18 months · 4 phases · break-even at month 18.</div>
       </div>
       <div class="pager"><b>11</b> / 16</div>
     </div>
     <div class="slide-body">
       <!-- eyebrow removed -->
-      <h2 class="rm-hero">$3 million. 18 months.<br>Phase 1 is a <em>transfer</em>, not a sale.</h2>
-      <p class="rm-lede">
-        The anchor customer — ASE — is already a CHT customer in Taiwan. We are not selling into a new relationship; we are extending an existing one across the Strait.
-      </p>
+      <h2 class="rm-hero">$3 million. 18 months.<br>Break-even <em>before</em> we go to the market twice.</h2>
 
       <div class="rm-track">
-        <div class="rm-phase">
+        <div class="rm-phase primary">
           <div class="ph-label">Phase 01 · Months 1–6</div>
           <h3>Anchor &amp; <em>Pulse</em></h3>
           <div class="cost">$900K · Penang</div>
-          <p>Ship Pulse on 3 ASE-Penang suppliers. Stand up the Fab Portal for ASE. <b>Team of 12</b>, half in Taipei, half in Penang.</p>
-          <div class="kpi">→ 3 suppliers live. Under 2 s latency. ASE contract signed.</div>
+          <p>Ship Pulse on 3 Penang suppliers. Stand up the Fab Portal for an anchor fab (ASE warm intro). <b>Team of 12</b>, half in Taipei, half in Penang.</p>
+          <div class="kpi">→ 3 suppliers live. Under 2s latency. Anchor fab signed.</div>
         </div>
 
         <div class="rm-phase">
