@@ -1,0 +1,3402 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChainSight — 初賽提案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #0A1F44;
+    --ink-2: #152A4F;
+    --ink-3: #243860;
+    --cream: #F7F1E6;
+    --cream-2: #EEE5D2;
+    --cream-3: #E5DAC1;
+    --paper: #FDFBF5;
+    --accent: #E8501C;
+    --accent-2: #C7400E;
+    --accent-soft: #F8E5DA;
+    --sage: #5F7F47;
+    --sage-soft: #E4EAD7;
+    --rust: #A53F22;
+    --hairline: #D9CCB8;
+    --hairline-ink: rgba(10, 31, 68, 0.12);
+    --muted: #6B6455;
+    --muted-2: #9B9080;
+  }
+
+  html, body {
+    font-family: 'Noto Sans TC', 'Inter', -apple-system, sans-serif;
+    background: #C3BEB0;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .deck {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 22px; padding: 30px 0;
+  }
+
+  .slide {
+    width: 1280px; height: 720px;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 10px 40px rgba(10, 31, 68, 0.18);
+    page-break-after: always; break-after: page;
+  }
+  .slide:last-child { page-break-after: auto; }
+
+  .display-en {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+  .serif {
+    font-family: 'Noto Serif TC', 'Noto Serif TC', Georgia, serif;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow.accent { color: var(--accent); }
+
+  .chrome {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 20px 64px 0;
+    z-index: 10;
+    gap: 24px;
+  }
+  .chrome .brand {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0;
+  }
+  .chrome .brand .cs {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-weight: 500;
+  }
+  .chrome .brand .cs em {
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .chrome .brand-group {
+    display: flex; flex-direction: column; gap: 6px;
+    max-width: 1040px; min-width: 0;
+  }
+  .chrome .brand-row {
+    display: flex; gap: 10px; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    flex-wrap: nowrap;
+  }
+  .chrome .brand-row .chap {
+    color: var(--accent); font-weight: 700;
+    background: var(--accent-soft); padding: 3px 8px;
+    border-radius: 2px; letter-spacing: 0.14em;
+    white-space: nowrap;
+  }
+  .chrome .brand-row .cat {
+    color: var(--ink); font-weight: 600;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+  }
+  .chrome .brand-row.key .cat { color: var(--accent); }
+  .chrome .brand-row .mark {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 3px 7px;
+    border-radius: 2px;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chrome .tagline {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14.5px; font-weight: 600;
+    color: var(--ink); line-height: 1.35;
+    letter-spacing: -0.005em;
+    max-width: 1020px;
+  }
+  .chrome .tagline em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .chrome .pager {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    padding-top: 4px;
+    white-space: nowrap;
+  }
+  .chrome .pager b { color: var(--accent); font-weight: 500; }
+
+  .slide-footer {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 14px 64px 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10px;
+    color: var(--muted-2);
+    letter-spacing: 0.1em;
+    z-index: 10;
+  }
+  .slide-footer .left { max-width: 860px; line-height: 1.5; }
+  .slide-footer .right {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+  }
+
+  .slide-body {
+    flex: 1;
+    padding: 78px 64px 52px;
+    display: flex; flex-direction: column;
+    position: relative;
+    min-height: 0;
+  }
+
+  .lede {
+    font-family: 'Noto Serif TC', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    max-width: 960px;
+    font-weight: 400;
+  }
+
+  .slide::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(10,31,68,0.04) 1px, transparent 0);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .slide > * { position: relative; z-index: 2; }
+  .slide::before { z-index: 1; }
+
+  /* ============ SLIDE 01 · COVER ============ */
+  .cover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .cover::before {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+  }
+  .cover-inner {
+    padding: 56px 72px 48px;
+    height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; z-index: 2;
+  }
+  .cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .cover-top .cht-mark { display: flex; align-items: flex-start; gap: 12px; }
+  .cover-top .cht-mark .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(232,80,28,0.25);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .cover-top .cht-mark .label-stack {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .cover-top .cht-mark .name {
+    font-family: 'Noto Serif TC', serif; font-size: 14px; color: var(--cream);
+    font-weight: 500;
+  }
+  .cover-top .cht-mark .name em {
+    color: var(--accent); font-style: italic;
+    font-family: 'Noto Serif TC', Georgia, serif;
+  }
+  .cover-top .cht-mark .team {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px; font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+  }
+  .cover-top .cht-mark .team .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: rgba(247,241,230,0.5);
+    margin-right: 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .cover-top .cht-mark .team .nm {
+    color: var(--accent);
+  }
+  .cover-top .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: rgba(247,241,230,0.55);
+    text-align: right; letter-spacing: 0.12em;
+    line-height: 1.8;
+  }
+  .cover-title {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 150px;
+    font-weight: 400;
+    line-height: 0.85;
+    letter-spacing: -0.045em;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+  }
+  .cover-title .chain { color: var(--cream); }
+  .cover-title .sight {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 300;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+  .cover-sub {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    line-height: 1.55;
+    color: rgba(247,241,230,0.85);
+    max-width: 960px;
+    margin-top: 24px;
+    font-weight: 300;
+  }
+  .cover-sub b { color: var(--cream); font-weight: 500; }
+  .cover-sub em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .cover-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(247,241,230,0.2);
+  }
+  .cover-stat .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: rgba(247,241,230,0.5);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .cover-stat .v {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: -0.015em;
+  }
+  .cover-stat .v em { color: var(--accent); font-style: italic; }
+  .cover-stat .note {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px; color: rgba(247,241,230,0.7);
+    margin-top: 6px; line-height: 1.4;
+  }
+
+  /* ============ SLIDE 02 · EXECUTIVE SUMMARY ============ */
+  .exec-body {
+    padding: 80px 64px 52px;
+    flex: 1;
+    display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .exec-hook {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 36px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    max-width: 1100px;
+    margin-bottom: 14px;
+    margin-top: 8px;
+  }
+  .exec-hook em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .exec-lede {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px; line-height: 1.75;
+    color: var(--muted); max-width: 1000px;
+    margin-bottom: 26px;
+  }
+  .exec-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    flex: 1;
+    min-height: 0;
+  }
+  .exec-col {
+    background: var(--cream);
+    padding: 20px 28px 16px 0;
+    display: flex; flex-direction: column;
+  }
+  .exec-col:nth-child(1) { padding-right: 28px; }
+  .exec-col:nth-child(2) { padding-left: 28px; padding-right: 28px; }
+  .exec-col:nth-child(3) { padding-left: 28px; padding-right: 0; }
+  .exec-col .num {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .exec-col h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    line-height: 1.3;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    margin-bottom: 10px;
+  }
+  .exec-col p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--ink-3);
+  }
+  .exec-col p b { color: var(--ink); font-weight: 600; }
+  .exec-col p .hl {
+    background: var(--accent-soft);
+    padding: 0 3px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ============ SLIDE 03 · PROBLEM ============ */
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    flex: 1;
+    min-height: 0;
+  }
+  .hero-number-block {
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding-right: 40px;
+    border-right: 1px solid var(--hairline);
+  }
+  .hero-number-block .num {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 200px;
+    font-weight: 400;
+    line-height: 0.85;
+    color: var(--accent);
+    letter-spacing: -0.05em;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+  }
+  .hero-number-block .num .pct {
+    font-size: 80px; vertical-align: top;
+    position: relative; top: 24px;
+  }
+  .hero-number-block .caption {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-top: 20px;
+    max-width: 580px;
+    font-weight: 500;
+  }
+  .hero-number-block .caption b { color: var(--accent); }
+  .hero-number-block .caption em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .hero-number-block .source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 20px;
+  }
+
+  .problem-side {
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .problem-side .side-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .problem-side h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 26px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    margin-bottom: 18px;
+  }
+  .problem-side h2 em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .problem-stats {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    margin-top: 6px;
+  }
+  .prob-stat {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 18px;
+    align-items: baseline;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .prob-stat:last-child { border-bottom: none; padding-bottom: 0; }
+  .prob-stat .big {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 0.9;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .prob-stat .big em { font-style: italic; color: var(--accent); }
+  .prob-stat .lbl {
+    font-size: 12px;
+    line-height: 1.75;
+    color: var(--ink-3);
+  }
+  .prob-stat .lbl b { color: var(--ink); font-weight: 600; }
+
+  /* ============ SLIDE 04 · MARKET ============ */
+  .market-hero {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 40px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 4px 0 10px;
+    max-width: 1140px;
+  }
+  .market-hero em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+
+  .funnel-stack {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .funnel-bar {
+    display: flex; flex-direction: column;
+    gap: 2px;
+    padding: 16px 24px;
+    border-radius: 2px;
+  }
+  .funnel-bar.tam { background: var(--ink); color: var(--cream); width: 100%; }
+  .funnel-bar.sam { background: var(--accent); color: var(--cream); width: 82%; }
+  .funnel-bar.som { background: var(--sage); color: var(--cream); width: 64%; }
+  .funnel-bar .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    opacity: 0.65;
+    text-transform: uppercase;
+  }
+  .funnel-bar .amt {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .funnel-bar .amt em {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-left: 10px;
+  }
+  .market-note {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-3);
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--hairline);
+    max-width: 580px;
+  }
+  .market-note b { color: var(--accent); font-weight: 600; }
+
+  .competitor-matrix {
+    display: flex; flex-direction: column;
+  }
+  .competitor-matrix .mh {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+    display: grid;
+    grid-template-columns: 1.6fr 1.1fr 1.1fr 1fr;
+    gap: 10px;
+  }
+  .comp-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1.1fr 1.1fr 1fr;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--hairline);
+    align-items: center;
+  }
+  .comp-row .name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  .comp-row .name em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; font-weight: 500;
+  }
+  .comp-row .cell {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .comp-row .yes { color: var(--sage); font-weight: 600; }
+  .comp-row .no { color: var(--rust); }
+  .comp-row.us {
+    background: linear-gradient(90deg, transparent 0%, var(--accent-soft) 50%, transparent 100%);
+    margin: 0 -12px;
+    padding: 12px;
+    border: none;
+  }
+  .comp-row.us .name {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .comp-row.us .cell { color: var(--ink); font-weight: 500; }
+
+  /* ============ SLIDE 05 · SOLUTION ============ */
+  .solution-body {
+    padding: 78px 64px 52px;
+    display: flex; flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .solution-hook {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 12px;
+    margin-top: 6px;
+    max-width: 1140px;
+  }
+  .solution-hook em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .solution-lede {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--ink-3);
+    max-width: 1000px;
+    margin-bottom: 28px;
+  }
+  .ai-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    flex: 1;
+    min-height: 0;
+  }
+  .ai-card {
+    display: flex; flex-direction: column;
+    padding-top: 18px;
+    border-top: 2px solid var(--ink);
+  }
+  .ai-card .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .ai-card h3 {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .ai-card h3 em { font-style: italic; color: var(--accent); }
+  .ai-card .kicker {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .ai-card .how {
+    font-size: 11.5px;
+    line-height: 1.8;
+    color: var(--ink-3);
+    padding-top: 12px;
+    border-top: 1px solid var(--hairline);
+    flex: 1;
+  }
+  .ai-card .how b { color: var(--ink); font-weight: 700; }
+  .ai-card .result {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--hairline);
+    display: flex; align-items: baseline; gap: 14px;
+  }
+  .ai-card .result .r-v {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .ai-card .result .r-l {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* ============ SLIDE 06 · TECHNICAL ============ */
+  .tech-hero {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 32px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    margin: 8px 0 8px;
+    max-width: 1100px;
+  }
+  .tech-hero em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .tech-layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 48px;
+    flex: 1;
+    min-height: 0;
+  }
+  .tech-steps { display: flex; flex-direction: column; margin-top: 10px; }
+  .tech-step {
+    display: grid;
+    grid-template-columns: 54px 1fr;
+    gap: 18px;
+    padding: 7px 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .tech-step:first-child { border-top: 2px solid var(--ink); }
+  .tech-step:last-child { border-bottom: 2px solid var(--ink); }
+  .tech-step .step-n {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 0.9;
+  }
+  .tech-step .step-t {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  .tech-step .step-d {
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--ink-3);
+  }
+  .tech-step .step-d b { color: var(--ink); font-weight: 600; }
+
+  .tech-side { display: flex; flex-direction: column; justify-content: center; }
+  .tech-side .side-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .tech-side h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 12px;
+  }
+  .tech-side h3 em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .tech-side p {
+    font-size: 11.5px;
+    line-height: 1.75;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .tech-side p b { color: var(--ink); font-weight: 700; }
+  .reg-pills {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 8px;
+  }
+  .reg-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    padding: 5px 10px;
+    background: var(--cream-2);
+    border: 1px solid var(--hairline);
+    border-radius: 20px;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+  .reg-pill.ok { background: var(--sage-soft); border-color: var(--sage); color: var(--sage); }
+  .reg-pill.warn { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-2); }
+
+  /* ============ SLIDE 07 · BUSINESS MODEL ============ */
+  .bm-hero {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    max-width: 1100px;
+    margin: 8px 0 10px;
+  }
+  .bm-hero em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .bm-lede {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-bottom: 24px;
+    line-height: 1.75;
+    max-width: 1000px;
+    font-weight: 400;
+  }
+  .bm-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr 1.1fr;
+    gap: 28px;
+    flex: 1;
+    align-items: stretch;
+    min-height: 0;
+  }
+  .bm-side {
+    padding: 22px 26px;
+    display: flex; flex-direction: column;
+    border-radius: 3px;
+  }
+  .bm-side.pay { background: var(--ink); color: var(--cream); }
+  .bm-side.free { background: var(--sage); color: var(--cream); }
+  .bm-side .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    opacity: 0.7;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .bm-side .who {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+  .bm-side .price-row {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(247,241,230,0.2);
+  }
+  .bm-side .price {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .bm-side .pu {
+    font-size: 11px;
+    opacity: 0.75;
+    line-height: 1.45;
+  }
+  .bm-side ul {
+    list-style: none; margin-top: 18px; padding: 0;
+  }
+  .bm-side li {
+    font-size: 12px;
+    line-height: 1.65;
+    padding: 5px 0 5px 14px;
+    opacity: 0.92;
+    position: relative;
+  }
+  .bm-side li::before {
+    content: '→';
+    position: absolute;
+    left: 0; top: 5px;
+    opacity: 0.6;
+  }
+  .bm-arrow {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 54px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+    align-self: center;
+    line-height: 1;
+  }
+  .bm-econ {
+    padding: 22px 24px;
+    background: var(--cream-2);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    display: flex; flex-direction: column;
+  }
+  .bm-econ .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .bm-econ .econ-row {
+    display: flex; justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px dotted var(--hairline);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .bm-econ .econ-row:last-of-type { border-bottom: none; }
+  .bm-econ .econ-row .v { font-weight: 600; color: var(--ink); font-family: 'Noto Serif TC', Georgia, serif; }
+  .bm-econ .total {
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 2px solid var(--ink);
+  }
+  .bm-econ .total .big {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .bm-econ .total .big-l {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-top: 5px;
+  }
+
+  /* ============ SLIDE 08 · STRATEGIC FIT ============ */
+  .why-hero {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 4px 0 10px;
+    max-width: 1140px;
+  }
+  .why-hero em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .why-lede {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-bottom: 26px;
+    max-width: 1000px;
+    line-height: 1.75;
+    font-weight: 400;
+  }
+  .why-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    flex: 1;
+    min-height: 0;
+  }
+  .why-pillar {
+    display: flex; flex-direction: column;
+    padding-top: 18px;
+    border-top: 2px solid var(--ink);
+  }
+  .why-pillar .p-num {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic;
+    font-size: 72px;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 0.85;
+    margin-bottom: 8px;
+  }
+  .why-pillar h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+  .why-pillar p {
+    font-size: 11.5px;
+    line-height: 1.8;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .why-pillar p b { color: var(--ink); font-weight: 700; }
+  .why-pillar .mini {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--hairline);
+    line-height: 1.6;
+  }
+  .why-pillar .mini b { color: var(--accent); font-weight: 600; }
+
+  /* ============ SLIDE 09 · FINANCIAL ============ */
+  .fin-hero {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 4px 0 10px;
+    max-width: 1140px;
+  }
+  .fin-hero em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .fin-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    flex: 1;
+    min-height: 0;
+  }
+  .fin-table-wrap { display: flex; flex-direction: column; }
+  .fin-table {
+    width: 100%; border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  .fin-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 10px;
+    text-align: right;
+    border-bottom: 2px solid var(--ink);
+    font-weight: 500;
+  }
+  .fin-table th:first-child { text-align: left; }
+  .fin-table td {
+    padding: 9px 10px;
+    text-align: right;
+    font-size: 13px;
+    color: var(--ink-3);
+    border-bottom: 1px solid var(--hairline);
+    font-family: 'Noto Serif TC', Georgia, serif;
+  }
+  .fin-table td:first-child {
+    text-align: left;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .fin-table tr.revenue td {
+    background: var(--accent-soft);
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .fin-table tr.revenue td:first-child { color: var(--accent-2); }
+  .fin-table tr.ebitda td {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 14px;
+    padding: 12px 10px;
+  }
+  .fin-table tr.ebitda td:first-child {
+    font-size: 15px;
+  }
+  .fin-cards {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+  }
+  .fin-card {
+    padding: 16px 20px;
+    border-left: 3px solid var(--accent);
+    background: var(--cream-2);
+  }
+  .fin-card .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .fin-card .vv {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+  }
+  .fin-card .vv em { font-style: italic; color: var(--accent); }
+  .fin-card .sub {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 6px;
+    line-height: 1.65;
+  }
+  .fin-assumptions {
+    padding-top: 14px;
+    margin-top: 2px;
+    border-top: 1px solid var(--hairline);
+  }
+  .fin-assumptions .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .fin-assumptions ul {
+    list-style: none; padding: 0;
+  }
+  .fin-assumptions li {
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--ink-3);
+    padding: 3px 0 3px 14px;
+    position: relative;
+  }
+  .fin-assumptions li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* ============ SLIDE 10 · ROADMAP ============ */
+  .rm-hero {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    margin: 8px 0 10px;
+    max-width: 1100px;
+  }
+  .rm-hero em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .rm-lede {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-bottom: 26px;
+    line-height: 1.75;
+    max-width: 1020px;
+    font-weight: 400;
+  }
+  .rm-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    flex: 1;
+    min-height: 0;
+  }
+  .rm-phase {
+    display: flex; flex-direction: column;
+    padding-top: 22px;
+    border-top: 2px solid var(--ink);
+    position: relative;
+  }
+  .rm-phase::before {
+    content: '';
+    position: absolute;
+    top: -7px; left: 0;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .rm-phase .ph-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .rm-phase h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .rm-phase h3 em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .rm-phase .cost {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .rm-phase p {
+    font-size: 11px;
+    line-height: 1.75;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+  }
+  .rm-phase p b { color: var(--ink); font-weight: 600; }
+  .rm-phase .kpi {
+    margin-top: auto;
+    padding-top: 11px;
+    border-top: 1px solid var(--hairline);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11.5px;
+    color: var(--accent);
+    line-height: 1.55;
+    font-weight: 600;
+  }
+
+  /* ============ SLIDE 11 · RISKS ============ */
+  .risk-hero {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    margin: 8px 0 8px;
+    max-width: 1100px;
+  }
+  .risk-hero em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .risk-lede {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-bottom: 22px;
+    line-height: 1.75;
+    max-width: 1020px;
+    font-weight: 400;
+  }
+  .risk-list {
+    display: flex; flex-direction: column;
+    border-top: 2px solid var(--ink);
+    flex: 1;
+  }
+  .risk-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 1.3fr;
+    gap: 26px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--hairline);
+    align-items: baseline;
+  }
+  .risk-row:last-child { border-bottom: 2px solid var(--ink); }
+  .risk-row .r-cat {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .risk-row .r-risk {
+    font-size: 11px;
+    color: var(--ink-3);
+    line-height: 1.75;
+  }
+  .risk-row .r-risk b { color: var(--rust); font-weight: 700; }
+  .risk-row .r-fix {
+    font-size: 11px;
+    color: var(--ink);
+    line-height: 1.75;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+  }
+  .risk-row .r-fix b { color: var(--accent); font-weight: 700; }
+
+  /* ============ SLIDE 12 · IMPACT ============ */
+  .impact-hero {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    margin: 8px 0 8px;
+    max-width: 1100px;
+  }
+  .impact-hero em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .impact-lede {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-bottom: 24px;
+    line-height: 1.75;
+    max-width: 1000px;
+    font-weight: 400;
+  }
+  .impact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    flex: 1;
+    min-height: 0;
+  }
+  .impact-levels { display: flex; flex-direction: column; }
+  .impact-level {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--hairline);
+    align-items: baseline;
+  }
+  .impact-level:first-child { border-top: 2px solid var(--ink); }
+  .impact-level:last-child { border-bottom: 2px solid var(--ink); }
+  .impact-level .n {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .impact-level h4 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .impact-level p {
+    font-size: 11px;
+    line-height: 1.75;
+    color: var(--ink-3);
+  }
+  .impact-level p b { color: var(--ink); font-weight: 700; }
+
+  .replication {
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .rep-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .rep-path {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .rep-node {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    padding: 7px 12px;
+    background: var(--cream-2);
+    border: 1px solid var(--hairline);
+    border-radius: 2px;
+    font-weight: 600;
+  }
+  .rep-node.now { background: var(--accent); color: var(--cream); border-color: var(--accent); }
+  .rep-node.next { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .rep-arr {
+    color: var(--accent); font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 14px; font-style: italic;
+  }
+  .rep-vision {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--ink-3);
+    padding-top: 18px;
+    border-top: 1px solid var(--hairline);
+  }
+  .rep-vision b { color: var(--ink); font-weight: 700; }
+  .rep-big {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    margin-top: 16px;
+  }
+  .rep-big-l {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* ============ SLIDE 13 · CLOSING ============ */
+  .closing {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .closing::before {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+  }
+  .closing .chrome .brand { color: var(--cream); }
+  .closing .chrome .brand .cs em { color: var(--accent); }
+  .closing .chrome .pager { color: rgba(247,241,230,0.5); }
+  .closing .chrome .pager b { color: var(--accent); }
+  .closing .chrome .brand-row .chap { background: rgba(232,80,28,0.25); color: var(--accent); }
+  .closing .chrome .brand-row .cat { color: var(--cream); }
+  .closing .chrome .brand-row.key .cat { color: var(--accent); }
+  .closing .chrome .tagline { color: var(--cream); }
+  .closing .chrome .tagline em { color: var(--accent); }
+  .closing-inner {
+    padding: 72px 72px 56px;
+    height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; z-index: 2;
+  }
+  .closing .eyebrow {
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+  .closing-title {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 92px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin-bottom: 20px;
+  }
+  .closing-title em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .closing-title-cn {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 62px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--cream);
+    margin-bottom: 18px;
+  }
+  .closing-title-cn em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 300;
+  }
+  .closing-sub {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 19px;
+    line-height: 1.7;
+    color: rgba(247,241,230,0.82);
+    max-width: 1000px;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+  .closing-sub b { color: var(--cream); font-weight: 500; }
+  .closing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(247,241,230,0.2);
+  }
+  .closing-grid .c {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .closing-grid p {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    line-height: 1.8;
+    color: rgba(247,241,230,0.88);
+    font-weight: 400;
+  }
+  .closing-grid p b { color: var(--cream); font-weight: 600; }
+
+  .nav-bar {
+    position: fixed; top: 14px; right: 14px; z-index: 999;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 10px 18px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    display: flex; gap: 10px; align-items: center;
+    box-shadow: 0 4px 20px rgba(10,31,68,0.3);
+    letter-spacing: 0.08em;
+  }
+  .nav-bar a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .nav-bar .sep { color: rgba(247,241,230,0.3); }
+
+  /* ============ SECTION BANNER · 書審重點章節視覺強調 ============ */
+  .section-banner {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 14px;
+    background: var(--ink);
+    color: var(--cream);
+    border-left: 6px solid var(--accent);
+    margin-bottom: 18px;
+    max-width: fit-content;
+  }
+  .section-banner .sb-num {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 26px; font-style: italic;
+    color: var(--accent); font-weight: 500;
+    line-height: 1;
+  }
+  .section-banner .sb-divider {
+    width: 1px; height: 22px; background: rgba(247,241,230,0.3);
+  }
+  .section-banner .sb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(247,241,230,0.7);
+    margin-bottom: 2px;
+  }
+  .section-banner .sb-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px; font-weight: 700;
+    letter-spacing: -0.005em;
+    line-height: 1;
+  }
+  .section-banner .sb-title em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .section-banner .sb-mark {
+    margin-left: 8px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px; font-weight: 700;
+    background: var(--accent); color: var(--cream);
+    padding: 3px 8px; border-radius: 2px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ============ SLIDE 02 · 章節目錄 ============ */
+  .toc-body {
+    flex: 1;
+    padding: 80px 64px 48px;
+    display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .toc-hook {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 32px;
+    line-height: 1.28;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 8px;
+    max-width: 1100px;
+  }
+  .toc-hook em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .toc-lede {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px; line-height: 1.7;
+    color: var(--muted); max-width: 1000px;
+    margin-bottom: 22px;
+  }
+  .toc-legend {
+    display: inline-flex; gap: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .toc-legend .dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent); margin-right: 6px;
+    vertical-align: middle;
+  }
+  .toc-legend .dot.ink { background: var(--ink); }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    flex: 1;
+    min-height: 0;
+  }
+  .toc-col {
+    background: var(--cream);
+    padding: 18px 22px 14px;
+    display: flex; flex-direction: column;
+  }
+  .toc-col .part {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .toc-col h4 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: 14px;
+    letter-spacing: -0.005em;
+  }
+  .toc-col h4 em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .toc-list {
+    display: flex; flex-direction: column;
+    gap: 9px;
+  }
+  .toc-item {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    gap: 10px;
+    align-items: baseline;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-item .n {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 16px; font-style: italic;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .toc-item .t {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+  .toc-item .t b { color: var(--ink); font-weight: 700; }
+  .toc-item .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    background: var(--accent);
+    color: var(--cream);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+  .toc-item.key .n { color: var(--accent); }
+  .toc-item.key .t { color: var(--ink); }
+  .toc-item.key .t b { color: var(--accent); }
+  .toc-footer-note {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .toc-footer-note b { color: var(--accent); font-weight: 700; }
+
+  /* ============ 去藝術化 · 字體統一 · 學生作品感 ============ */
+  em { font-style: normal !important; font-family: inherit !important; }
+  .cover-title .sight,
+  .closing-title em,
+  .closing-title,
+  .cover-title,
+  .prob-stat .big,
+  .prob-stat .big em,
+  .fin-card .vv em,
+  .ai-card h3,
+  .ai-card h3 em,
+  .why-pillar .p-num,
+  .hero-number-block .num,
+  .tech-step .step-n,
+  .rm-phase .cost,
+  .impact-level .n,
+  .rep-arr,
+  .toc-item .n,
+  .pain-stat .v em,
+  .pain-rank .rk,
+  .opp-tw-stat .v em,
+  .ref-item .rn,
+  .pain-point .n {
+    font-style: normal !important;
+    font-variation-settings: normal !important;
+  }
+  .display-en, .cover-title, .hero-number-block .num, .funnel-bar .amt,
+  .fin-table td, .cover-stat .v, .prob-stat .big, .ai-card h3,
+  .fin-card .vv, .why-pillar .p-num, .tech-step .step-n, .rm-phase .cost,
+  .impact-level .n, .bm-side .price, .bm-econ .total .big,
+  .pain-stat .v, .opp-tw-stat .v, .opp-region .city,
+  .toc-title {
+    font-family: 'Noto Serif TC', Georgia, serif !important;
+  }
+
+  /* ============ 密度微調 · 商業競賽感 ============ */
+  .slide-body { padding: 62px 54px 44px; }
+  .exec-body { padding: 62px 54px 44px; }
+  .solution-body { padding: 62px 54px 44px; }
+  .toc-body { padding: 48px 54px 40px; }
+  .chrome { padding: 16px 54px 0; gap: 18px; }
+  .slide-footer { padding: 10px 54px 12px; font-size: 9.5px; }
+  .cover-inner { padding: 46px 60px 42px; }
+
+  /* ============ SLIDE · 市場痛點 ============ */
+  .pain-body {
+    flex: 1; padding: 48px 54px 40px;
+    display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .pain-hook {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 30px; line-height: 1.28;
+    font-weight: 700; letter-spacing: -0.01em;
+    color: var(--ink); max-width: 1140px;
+    margin: 2px 0 4px;
+  }
+  .pain-hook em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .pain-lede {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12.5px; line-height: 1.7;
+    color: var(--ink-3); max-width: 1040px;
+    margin-bottom: 16px;
+  }
+  .pain-lede b { color: var(--ink); font-weight: 700; }
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 28px;
+    flex: 1; min-height: 0;
+  }
+  .pain-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 14px 0;
+  }
+  .pain-stat {
+    padding: 4px 12px 4px 14px;
+    border-left: 3px solid var(--accent);
+  }
+  .pain-stat .v {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 28px; font-weight: 500;
+    line-height: 1; color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .pain-stat .v em { font-style: italic; color: var(--accent); }
+  .pain-stat .l {
+    font-size: 10.5px; line-height: 1.55;
+    color: var(--ink-3); margin-top: 5px;
+  }
+  .pain-stat .l b { color: var(--ink); font-weight: 700; }
+  .pain-points {
+    display: flex; flex-direction: column;
+    gap: 9px;
+    margin-top: 14px;
+  }
+  .pain-point {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--hairline);
+    align-items: baseline;
+  }
+  .pain-point:last-child { border-bottom: none; padding-bottom: 0; }
+  .pain-point .n {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 15px; font-style: italic;
+    color: var(--accent); font-weight: 500;
+    line-height: 1;
+  }
+  .pain-point .txt {
+    font-size: 11.5px; line-height: 1.65;
+    color: var(--ink-3);
+  }
+  .pain-point .txt b { color: var(--ink); font-weight: 700; }
+  .pain-point .txt em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .pain-side {
+    display: flex; flex-direction: column;
+    border-left: 2px solid var(--ink);
+    padding-left: 24px;
+  }
+  .pain-side .side-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .pain-side h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 17px; font-weight: 700;
+    line-height: 1.35; color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .pain-side h3 em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .pain-rank {
+    display: flex; flex-direction: column;
+    gap: 6px; margin-bottom: 14px;
+  }
+  .pain-rank .row {
+    display: grid;
+    grid-template-columns: 38px 1fr 60px;
+    gap: 10px;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .pain-rank .row:last-child { border-bottom: none; }
+  .pain-rank .rk {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 18px; font-style: italic;
+    font-weight: 500; color: var(--accent);
+    line-height: 1;
+  }
+  .pain-rank .nm {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12.5px; font-weight: 600;
+    color: var(--ink);
+  }
+  .pain-rank .nm.us {
+    color: var(--accent);
+  }
+  .pain-rank .bar-wrap {
+    height: 6px; background: var(--cream-2);
+    border-radius: 2px; overflow: hidden;
+    position: relative;
+  }
+  .pain-rank .bar {
+    height: 100%; background: var(--ink);
+  }
+  .pain-rank .bar.accent { background: var(--accent); }
+  .pain-insight {
+    margin-top: auto;
+    padding: 12px 14px;
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12px; line-height: 1.7;
+    color: var(--ink); font-weight: 500;
+  }
+  .pain-insight b { color: var(--accent); font-weight: 700; }
+
+  /* ============ SLIDE · 市場機會 ============ */
+  .opp-body {
+    flex: 1; padding: 48px 54px 40px;
+    display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .opp-hook {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 30px; line-height: 1.28;
+    font-weight: 700; letter-spacing: -0.01em;
+    color: var(--ink); max-width: 1140px;
+    margin: 2px 0 4px;
+  }
+  .opp-hook em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .opp-lede {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12.5px; line-height: 1.7;
+    color: var(--ink-3); max-width: 1040px;
+    margin-bottom: 14px;
+  }
+  .opp-lede b { color: var(--ink); font-weight: 700; }
+  .opp-keys {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .opp-key {
+    background: var(--cream);
+    padding: 12px 16px 12px 14px;
+    border-left: 3px solid var(--accent);
+  }
+  .opp-key .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin-bottom: 4px;
+  }
+  .opp-key h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px; font-weight: 700;
+    line-height: 1.35; color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .opp-key h3 em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .opp-key p {
+    font-size: 11px; line-height: 1.65;
+    color: var(--ink-3);
+  }
+  .opp-key p b { color: var(--ink); font-weight: 700; }
+  .opp-lower {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 28px;
+    flex: 1; min-height: 0;
+    margin-top: 14px;
+  }
+  .opp-cluster {
+    display: flex; flex-direction: column;
+  }
+  .opp-cluster h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .opp-cluster-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .opp-region {
+    padding: 12px 14px;
+    background: var(--cream-2);
+    border-radius: 2px;
+  }
+  .opp-region .city {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--ink); margin-bottom: 2px;
+  }
+  .opp-region .city em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .opp-region .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.16em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 8px; font-weight: 700;
+  }
+  .opp-region .desc {
+    font-size: 10.5px; line-height: 1.55;
+    color: var(--ink-3);
+  }
+  .opp-region .desc b { color: var(--ink); font-weight: 700; }
+  .opp-tw {
+    display: flex; flex-direction: column;
+    border-left: 2px solid var(--ink);
+    padding-left: 22px;
+  }
+  .opp-tw .tw-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .opp-tw h4 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--ink); margin-bottom: 10px;
+    line-height: 1.35;
+  }
+  .opp-tw h4 em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+  .opp-tw-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .opp-tw-stat {
+    padding: 8px 10px;
+    background: var(--cream-2);
+    border-top: 2px solid var(--accent);
+  }
+  .opp-tw-stat .v {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--ink); line-height: 1;
+    letter-spacing: -0.015em;
+  }
+  .opp-tw-stat .v em { font-style: italic; color: var(--accent); }
+  .opp-tw-stat .l {
+    font-size: 9.5px; color: var(--ink-3);
+    line-height: 1.4; margin-top: 5px;
+  }
+  .opp-tw-stat .l b { color: var(--ink); font-weight: 700; }
+  .opp-tw p {
+    font-size: 11px; line-height: 1.65;
+    color: var(--ink-3);
+    padding-top: 10px;
+    border-top: 1px solid var(--hairline);
+  }
+  .opp-tw p b { color: var(--ink); font-weight: 700; }
+  .opp-tw p em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 500;
+  }
+
+  /* ============ SLIDE · 資料來源 / 附錄 ============ */
+  .ref-body {
+    flex: 1; padding: 48px 54px 40px;
+    display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .ref-hook {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 28px; line-height: 1.25;
+    font-weight: 700; letter-spacing: -0.01em;
+    color: var(--ink); margin: 2px 0 4px;
+  }
+  .ref-hook em {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-style: italic; color: var(--accent); font-weight: 400;
+  }
+  .ref-lede {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px; line-height: 1.65;
+    color: var(--ink-3); max-width: 1040px;
+    margin-bottom: 14px;
+  }
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+    flex: 1; min-height: 0;
+  }
+  .ref-col {
+    display: flex; flex-direction: column;
+  }
+  .ref-col h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+    padding-bottom: 6px; margin-bottom: 6px;
+    border-bottom: 2px solid var(--ink);
+    font-weight: 700;
+  }
+  .ref-list {
+    display: flex; flex-direction: column;
+  }
+  .ref-item {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--hairline);
+    align-items: baseline;
+  }
+  .ref-item:last-child { border-bottom: none; }
+  .ref-item .rn {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 11px; font-style: italic;
+    color: var(--accent); font-weight: 500;
+    line-height: 1.4;
+  }
+  .ref-item .rtxt {
+    font-size: 10.5px; line-height: 1.5;
+    color: var(--ink-3);
+  }
+  .ref-item .rtxt b {
+    color: var(--ink); font-weight: 700;
+    font-family: 'Noto Serif TC', serif;
+  }
+  .ref-item .rtxt a {
+    color: var(--accent);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    word-break: break-all;
+    letter-spacing: 0;
+  }
+  .ref-item .rtxt a:hover { text-decoration: underline; }
+  .ref-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: var(--cream-2);
+    border-left: 4px solid var(--ink);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11px; line-height: 1.6;
+    color: var(--ink-3);
+  }
+  .ref-note b { color: var(--ink); font-weight: 700; }
+
+  /* ============ TOC 密集化 ============ */
+  .toc-hook, .toc-lede, .toc-legend, .toc-footer-note { display: none; }
+  .toc-title {
+    font-family: 'Noto Serif TC', Georgia, serif;
+    font-size: 54px; font-style: italic;
+    font-weight: 300; line-height: 0.9;
+    color: var(--ink); letter-spacing: -0.03em;
+    margin-bottom: 4px;
+  }
+  .toc-title .cn {
+    font-family: 'Noto Serif TC', serif;
+    font-style: normal; font-weight: 700;
+    color: var(--ink); font-size: 40px;
+    margin-left: 12px;
+    letter-spacing: -0.01em;
+  }
+  .toc-subline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--ink);
+    display: flex; justify-content: space-between;
+  }
+  .toc-subline .hl { color: var(--accent); font-weight: 700; }
+  .toc-subline .hl em { font-family: 'Noto Serif TC', Georgia, serif; font-style: italic; }
+  .toc-grid { flex: 1; }
+  .toc-col h4 { font-size: 15px; margin-bottom: 10px; }
+  .toc-col .part { font-size: 9px; margin-bottom: 4px; }
+  .toc-item { padding: 5px 0; }
+  .toc-item .n { font-size: 14px; }
+  .toc-item .t { font-size: 11.5px; line-height: 1.4; }
+
+  @media print {
+    body { background: white; }
+    .deck { gap: 0; padding: 0; }
+    .slide { box-shadow: none; }
+    .nav-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-bar">
+  <a href="../index.html">← 首頁</a>
+  <span class="sep">/</span>
+  <a href="proposal-en.html">EN</a>
+  <span class="sep">/</span>
+  <span>ChainSight · 中文</span>
+</div>
+
+<div class="deck">
+
+  <!-- ============ SLIDE 01 · COVER ============ -->
+  <section class="slide cover">
+    <div class="cover-inner">
+      <div class="cover-top">
+        <div class="cht-mark">
+          <span class="dot"></span>
+          <div class="label-stack">
+            <span class="name">中華電信 · <em>AI 商業提案競賽</em></span>
+            <span class="team"><span class="lbl">Team</span><span class="nm">選中華一定隊</span></span>
+          </div>
+        </div>
+        <div class="meta">
+          初 賽 提 案<br>
+          2026 · 馬 來 西 亞 · 越 南 · 新 加 坡
+        </div>
+      </div>
+
+      <div>
+        <h1 class="cover-title"><span class="chain">Chain</span><span class="sight">Sight</span></h1>
+        <p class="cover-sub">
+          我們想做的是一個 <b>供應鏈即時資訊平台</b>。檳城有 4,000 家半導體小廠,我們希望讓 Intel、ASE 這些大廠可以直接看到他們的產能和品質。跑在中華電信的海纜和馬來西亞子公司網路上。
+        </p>
+      </div>
+
+      <div class="cover-stats">
+        <div class="cover-stat">
+          <div class="k">斷層所在</div>
+          <div class="v">82<em>%</em></div>
+          <div class="note">供應商仍用 Excel 與電話管理工廠</div>
+        </div>
+        <div class="cover-stat">
+          <div class="k">可達市場</div>
+          <div class="v">$1.2<em>B</em></div>
+          <div class="note">東南亞半導體走廊</div>
+        </div>
+        <div class="cover-stat">
+          <div class="k">第 3 年營收</div>
+          <div class="v">$4.2<em>M</em></div>
+          <div class="note">64% 可再發生 · 第 5 年擴至 $24M</div>
+        </div>
+        <div class="cover-stat">
+          <div class="k">客戶報酬</div>
+          <div class="v">3.2<em>×</em></div>
+          <div class="note">訂閱費回本倍數</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 02 · 市場痛點 ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 00</span>
+          <span class="cat">市場痛點</span>
+        </div>
+        <div class="tagline">馬來西亞企業的 AI 使用率不到 4 成,但半導體出口成長很快。我們想補的就是這個落差。</div>
+      </div>
+      <div class="pager"><b>02</b> / 16</div>
+    </div>
+    <div class="pain-body">
+      <div class="eyebrow accent">東南亞半導體走廊 · 2024–2026 現場</div>
+      <h2 class="pain-hook">馬來西亞的 AI 使用率排在東南亞後段,可是全世界有 13% 的晶片封測在這裡做。我們覺得他們缺的不是訂單,是一個可以讓訂單被看到的資料平台。</h2>
+      <p class="pain-lede">
+        Adobe 研究指出馬來西亞企業 AI 使用率 <b>落後東南亞其他國家</b>,品牌業務應用更遠落後員工與消費者的需求;但同一塊土地上,2020–2024 年柔佛資料中心容量從 10MW 暴衝至 <b>1,500MW</b>、2024 年資料中心投資較 2023 翻倍,英特爾一次砸 <b>70 億美元</b>建 3D 封裝廠 —— 硬體蓋好了,AI 沒跟上,這就是我們要切入的縫。
+      </p>
+
+      <div class="pain-grid">
+        <div>
+          <div class="pain-stats">
+            <div class="pain-stat">
+              <div class="v">&lt;<em>40</em>%</div>
+              <div class="l">馬來西亞企業 AI 使用率,<b>落後東南亞其他國家</b>(Adobe 2023)</div>
+            </div>
+            <div class="pain-stat">
+              <div class="v">1,500<em>MW</em></div>
+              <div class="l">柔佛資料中心容量 2020→2024 <b>翻 150 倍</b>,算力堆好了等著吃</div>
+            </div>
+            <div class="pain-stat">
+              <div class="v">13<em>%</em></div>
+              <div class="l">全球半導體 <b>封測產能</b> 集中在馬國(第 6 大半導體出口國)</div>
+            </div>
+            <div class="pain-stat">
+              <div class="v">$<em>70</em>億</div>
+              <div class="l">Intel 3D 封裝廠單筆投資 · Infineon、ASE、Inari <b>同步擴產</b></div>
+            </div>
+            <div class="pain-stat">
+              <div class="v">50<em>%</em></div>
+              <div class="l">AI 相關企業 <b>占馬國數位出口近半</b>,2024 年貢獻 $10.3 億美元</div>
+            </div>
+            <div class="pain-stat">
+              <div class="v">8.3<em>%</em></div>
+              <div class="l">馬國半導體設備市場 <b>2026 起 CAGR</b>,AI 晶片需求拉動</div>
+            </div>
+          </div>
+
+          <div class="pain-points">
+            <div class="pain-point">
+              <div class="n">01</div>
+              <div class="txt"><b>硬體蓋好、軟體落後。</b>馬國已是全球最集中的算力供應區之一,但本地企業 AI 應用落在東南亞末段,<em>軟硬體資源尚待整合</em>。</div>
+            </div>
+            <div class="pain-point">
+              <div class="n">02</div>
+              <div class="txt"><b>缺工變成剛性需求。</b>製造業薪資高於周邊、聘僱移工受配額限制 —— <b>AI 是補缺的唯一解法</b>,不是選配。</div>
+            </div>
+            <div class="pain-point">
+              <div class="n">03</div>
+              <div class="txt"><b>政策窗口正在打開。</b>NIMP 2030 + 國家 AI 路線圖 + 2026 NIA 新獎勵把 <em>AI 智慧製造列為核心</em>,現在進場拿到最多補貼。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pain-side">
+          <div class="side-label">Global AI Index · Tortoise Media</div>
+          <h3>新加坡 <em>世界第 3</em>、AI Intensity 全球第 1 —— 馬來西亞作為鄰國,等的是一條能接得上的資料管道。</h3>
+
+          <div class="pain-rank">
+            <div class="row">
+              <div class="rk">#1</div>
+              <div class="nm">美國 United States</div>
+              <div class="bar-wrap"><div class="bar" style="width:100%;"></div></div>
+            </div>
+            <div class="row">
+              <div class="rk">#2</div>
+              <div class="nm">中國 China</div>
+              <div class="bar-wrap"><div class="bar" style="width:85%;"></div></div>
+            </div>
+            <div class="row">
+              <div class="rk">#3</div>
+              <div class="nm us">新加坡 Singapore</div>
+              <div class="bar-wrap"><div class="bar accent" style="width:74%;"></div></div>
+            </div>
+            <div class="row">
+              <div class="rk">#4</div>
+              <div class="nm">英國 UK</div>
+              <div class="bar-wrap"><div class="bar" style="width:66%;"></div></div>
+            </div>
+            <div class="row">
+              <div class="rk">#6</div>
+              <div class="nm">南韓 South Korea</div>
+              <div class="bar-wrap"><div class="bar" style="width:58%;"></div></div>
+            </div>
+            <div class="row">
+              <div class="rk">#11</div>
+              <div class="nm">日本 Japan</div>
+              <div class="bar-wrap"><div class="bar" style="width:42%;"></div></div>
+            </div>
+          </div>
+
+          <div class="pain-insight">
+            <b>對企業:</b>未來 10 年最具性價比的資料中心基地。<b>對製造商:</b>供應鏈重組下的重要節點。<b>對新創與研發:</b>不成熟,但 <b>值得下注的潛力</b>。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">資料來源 · 經濟部國際貿易署 2023/2025 · Adobe 2023 · Tortoise Media Global AI Index · 馬國 NIMP 2030 · 詳見附錄 p.16</div>
+      <div class="right">ChainSight · 02</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 03 · 目錄 ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">導覽</span>
+          <span class="cat">目錄</span>
+        </div>
+        <div class="tagline">14 章 · 3 段 —— <em>市場、產品、財務</em> 核心章節以橘色標示,可直接跳讀。</div>
+      </div>
+      <div class="pager"><b>03</b> / 16</div>
+    </div>
+    <div class="toc-body">
+      <div class="toc-title"><span style="font-family:'Fraunces',serif;font-style:italic;">Contents</span><span class="cn">目錄</span></div>
+      <div class="toc-subline">
+        <span>CH.00 → CH.12 · 16 PAGES</span>
+        <span class="hl">橘色 = 核心 5 章 · <em>市場 / 產品 / 商業 / 護城河 / 財務</em></span>
+      </div>
+
+      <div class="toc-grid">
+        <div class="toc-col">
+          <div class="part">PART A · 為什麼是現在</div>
+          <h4>訂單<em>斷層</em>正在發生</h4>
+          <div class="toc-list">
+            <div class="toc-item">
+              <div class="n">00.</div>
+              <div class="t"><b>市場痛點</b>——馬國 AI 使用率不足 4 成、半導體出口飆升 · p.02</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">01.</div>
+              <div class="t"><b>問題與摘要</b>——82% 仍用 Excel、48 小時答不出產能 · p.04</div>
+              <div></div>
+            </div>
+            <div class="toc-item key">
+              <div class="n">02.</div>
+              <div class="t"><b>市場機會</b>——CHT 馬子公司 2025/12、NIA 新獎勵 · p.05</div>
+              <div></div>
+            </div>
+            <div class="toc-item key">
+              <div class="n">03.</div>
+              <div class="t"><b>市場與護城河</b>——$12 億走廊、對手比對 · p.06</div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toc-col">
+          <div class="part">PART B · 我們做什麼</div>
+          <h4>能落地的 <em>產品與模式</em></h4>
+          <div class="toc-list">
+            <div class="toc-item key">
+              <div class="n">04.</div>
+              <div class="t"><b>產品與解決方案</b>——Pulse / Predict / Comply 三個 AI 小幫手 · p.07</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">05.</div>
+              <div class="t"><b>技術架構</b>——$240 小電腦、資料不離廠、走中華電信海纜 · p.08</div>
+              <div></div>
+            </div>
+            <div class="toc-item key">
+              <div class="n">06.</div>
+              <div class="t"><b>商業模式</b>——大廠付費、小供應商免費的雙邊網路 · p.09</div>
+              <div></div>
+            </div>
+            <div class="toc-item key">
+              <div class="n">07.</div>
+              <div class="t"><b>中華電信護城河</b>——海纜 + 馬子公司 + ASE 案例 · p.10</div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toc-col">
+          <div class="part">PART C · 為什麼能贏、回報多少</div>
+          <h4>財務、執行、<em>擴展</em></h4>
+          <div class="toc-list">
+            <div class="toc-item key">
+              <div class="n">08.</div>
+              <div class="t"><b>財務</b>——第 3 年損益兩平、第 5 年 $24M · p.11</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">09.</div>
+              <div class="t"><b>執行計畫</b>——18 個月 · $300 萬 · 4 階段 · p.12</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">10.</div>
+              <div class="t"><b>風險與應對</b>——5 項主要風險 + 對應措施 · p.13</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">11–12.</div>
+              <div class="t"><b>衝擊、擴展、請求</b>——$24M 第 5 年、3 國在地、1 個綠燈 · p.14–15</div>
+              <div></div>
+            </div>
+            <div class="toc-item">
+              <div class="n">附錄.</div>
+              <div class="t"><b>資料來源</b>——所有數據與連結可追溯 · p.16</div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">章節編號對應每張投影片左上角 CH.XX 標籤 · 橘色 = 核心 5 章(市場 · 產品 · 商業 · 護城河 · 財務)</div>
+      <div class="right">ChainSight · 03</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 04 · 問題與摘要(合併) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 01</span>
+          <span class="cat">問題與摘要</span>
+        </div>
+        <div class="tagline">48 小時才回得出產能,訂單就這樣被越南搶走了。</div>
+      </div>
+      <div class="pager"><b>04</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">一頁講完問題是什麼</div>
+      <h2 class="exec-hook" style="font-size:30px;margin-bottom:10px;">
+        Intel 問供應商「你今天實際產能多少?」,回答要花 48 小時。<br>
+        這時候訂單早就轉給越南了。
+      </h2>
+      <p class="exec-lede" style="margin-bottom:16px;">
+        檳城 <b>4,000 家</b> 為 Intel / ASE / Infineon / Inari 供貨的小廠,82% 仍用 Excel 與電話管線;Tier-1 晶圓廠對實際產能與合規完全沒有即時視野。ChainSight 把斷層壓到 <b>2 秒以內</b>,跑在只有中華電信擁有的資料管道上。
+      </p>
+
+      <div class="pain-stats" style="grid-template-columns:repeat(5,1fr);margin-bottom:14px;">
+        <div class="pain-stat">
+          <div class="v">82<em>%</em></div>
+          <div class="l">檳城供應商 <b>仍用 Excel</b> 管理生產(MIDA · MIDF 2024)</div>
+        </div>
+        <div class="pain-stat">
+          <div class="v"><em>48</em>h</div>
+          <div class="l">回答「今天產能?」平均延遲 · 每張錯過 PO <b>損失 $25 萬</b></div>
+        </div>
+        <div class="pain-stat">
+          <div class="v">$<em>150</em>億</div>
+          <div class="l">Intel / Infineon / Inari / ASE <b>新一輪資本支出</b></div>
+        </div>
+        <div class="pain-stat">
+          <div class="v">55<em>K</em></div>
+          <div class="l">工程師缺口 · 每年僅產出 5K · <b>AI 是唯一補缺</b></div>
+        </div>
+        <div class="pain-stat">
+          <div class="v">3.2<em>×</em></div>
+          <div class="l">大廠訂閱費 <b>年度回本倍數</b>(一張訂單 $25 萬)</div>
+        </div>
+      </div>
+
+      <div class="exec-grid">
+        <div class="exec-col">
+          <div class="num">i.</div>
+          <h3>值得修補的斷層</h3>
+          <p>馬來西亞剛吸入 <b>$150 億</b> 半導體新資本、柔佛資料中心從 10MW 飆至 <b>1,500MW</b>。廠房動土了——供應商可見度<span class="hl">還停在 Excel</span>,訂單悄悄流向越南。</p>
+        </div>
+        <div class="exec-col">
+          <div class="num">ii.</div>
+          <h3>真正能落地的解法</h3>
+          <p>三個 AI 小幫手、一個儀表板:<b>Pulse</b> 盯現場(&lt;2 秒)、<b>Predict</b> 提前 7–14 天預警(85%)、<b>Comply</b> 把兩個月稽核壓成一鍵。<span class="hl">大客戶付費、小供應商免費</span>。</p>
+        </div>
+        <div class="exec-col">
+          <div class="num">iii.</div>
+          <h3>只有中華電信能交付</h3>
+          <p>三樣東西、沒人同時擁有:<b>14 條登陸馬來西亞的海底電纜</b>、<b>馬來西亞子公司</b>(2025/12 成立)、<span class="hl">已在日月光 ASE 運作的智慧工廠案例</span>。競爭者頂多有其中一項。</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">市場 $1.2B · 第 3 年 $4.2M · 第 5 年 $24M · 第 3 年 Q4 損益兩平 · 18 個月預算 $300 萬 · 時機窗口 2025–2027</div>
+      <div class="right">ChainSight · 04</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 05 · 市場機會(NEW) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 02</span>
+          <span class="cat">市場機會</span>
+        </div>
+        <div class="tagline">2025/12 中華電信馬子公司成立、5G-A MoU 簽了、2026 馬國投資獎勵剛上路——時機剛好。</div>
+      </div>
+      <div class="pager"><b>05</b> / 16</div>
+    </div>
+    <div class="opp-body">
+      <div class="eyebrow accent">為什麼是 2026 · 為什麼是台商視角</div>
+      <h2 class="opp-hook">中華電信自己的 slogan 是「台商在哪,中華電信就在哪」。現在三件事剛好湊齊了:在地子公司、AI-Native 網路、馬國新獎勵。</h2>
+      <p class="opp-lede">
+        馬來西亞是 <b>台商第 9 大製造業投資國</b>(累計 $162.2 億美元)、第 3 大外資雇主;產業集中於 <b>E&amp;E / 金屬加工 / 機械設備</b>——全都是對「品管 AI」與「精準倉儲」有剛性需求的賽道。ChainSight 不需要說服市場接受 AI,只需要把管道接上。
+      </p>
+
+      <div class="opp-keys">
+        <div class="opp-key">
+          <div class="tag">KEY 01 · 在地法人</div>
+          <h3>中華電信馬子公司 <em>2025/12/01</em> 成立</h3>
+          <p>吉隆坡辦事處升格為 <b>Chunghwa Telecom Malaysia Sdn. Bhd.</b>——台灣電信業第一家能在當地銷售、請款、支援、雇人的在地子公司。沒有它,案子落不了地。</p>
+        </div>
+        <div class="opp-key">
+          <div class="tag">KEY 02 · AI-Native 網路</div>
+          <h3>5G-Advanced + <em>AI 智慧網路</em> MoU</h3>
+          <p>CHT 於 <b>2026 MWC 與 Nokia、Ericsson 簽署</b> 5G-A 與 AI 智慧網路備忘錄,AI-Native 架構能穩定支撐 $300 萬預算下的邊緣 AI 運算——對手做不到同級穩定度。</p>
+        </div>
+        <div class="opp-key">
+          <div class="tag">KEY 03 · NIA 新獎勵</div>
+          <h3>2026 馬國 <em>新投資獎勵架構</em></h3>
+          <p>AI 智慧製造屬 15 大產業類別 <b>核心</b>,由 <b>六大維度</b> 評分(經濟複雜度、高價值就業、供應鏈連結、聚落、包容性、ESG)。ChainSight 六項全中,拿最高檔獎勵。</p>
+        </div>
+      </div>
+
+      <div class="opp-lower">
+        <div class="opp-cluster">
+          <h4>台商在馬產業地理 · 三角聚落</h4>
+          <div class="opp-cluster-grid">
+            <div class="opp-region">
+              <div class="city">檳城 <em>Penang</em></div>
+              <div class="role">半導體 · 封測</div>
+              <div class="desc"><b>供應全球 13% 封測需求</b>、第 6 大半導體出口國。Intel / ASE / Infineon / Inari 集中地。ChainSight <b>Phase 1 錨點</b>。</div>
+            </div>
+            <div class="opp-region">
+              <div class="city">雪蘭莪 <em>Selangor</em></div>
+              <div class="role">組裝 · 物流</div>
+              <div class="desc">台商 E&amp;E 組裝與區域物流中心。對 <b>精準倉儲與品管 AI</b> 有直接需求,Phase 2 擴張對象。</div>
+            </div>
+            <div class="opp-region">
+              <div class="city">柔佛 <em>Johor</em></div>
+              <div class="role">資料中心 · 新馬連動</div>
+              <div class="desc">2020→2024 容量 <b>10MW→1,500MW</b>,與新加坡連動的算力基地,CHT 海纜直達,Phase 3–4 樞紐。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="opp-tw">
+          <div class="tw-label">台商結構 · 為何剛性需求</div>
+          <h4>台商 <em>第 3 大外資雇主</em>、第 9 大製造業投資——ChainSight 的客戶名單已經在這裡。</h4>
+          <div class="opp-tw-stats">
+            <div class="opp-tw-stat">
+              <div class="v">$<em>162</em>億</div>
+              <div class="l">台商在馬 <b>製造業累計投資</b>(2025/Q3)</div>
+            </div>
+            <div class="opp-tw-stat">
+              <div class="v">#<em>3</em></div>
+              <div class="l">台商 <b>當地外資雇主</b> 排名(僅次 SG / 日本)</div>
+            </div>
+            <div class="opp-tw-stat">
+              <div class="v">8.3<em>%</em></div>
+              <div class="l">馬國半導體設備 <b>CAGR 2026+</b></div>
+            </div>
+            <div class="opp-tw-stat">
+              <div class="v">325<em>家</em></div>
+              <div class="l">馬國 AI 企業已 <b>輸出 27 國</b>、2024 出口 $10.3 億</div>
+            </div>
+          </div>
+          <p>新馬政府高層 <b>已建共識</b>——交通幹道、產業策略、電子發票整合全部對齊。發展 <em>綠能、數位雲端與 AI</em> 的企業正能「借得東風」。ChainSight 在這條東風上。</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">資料來源 · CHT 官方 2025/12/01 · UDN 2026 MWC · PwC Taiwan 2026 NIA · 駐馬台北經濟文化辦事處 2025/09 · 詳見附錄 p.16</div>
+      <div class="right">ChainSight · 05</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 06 · MARKET & MOAT (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 03</span>
+          <span class="cat">市場與護城河</span>
+        </div>
+        <div class="tagline">東南亞半導體這條走廊有 $12 億美元,目前還沒人接進去。</div>
+      </div>
+      <div class="pager"><b>06</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <h2 class="market-hero">東南亞這條 $12 億美元的走廊,目前還沒有人真的接進去。</h2>
+      <p class="lede" style="font-size: 14px; margin-bottom: 22px;">
+        我們不是要搶全球 $410 億的雲端供應鏈市場——我們要建的是唯一一條真正能接到東南亞小供應商的資料管道。
+      </p>
+
+      <div class="split-layout" style="grid-template-columns: 1fr 1.1fr; gap: 48px;">
+        <div>
+          <div class="funnel-stack">
+            <div class="funnel-bar tam">
+              <div class="tag">TOTAL</div>
+              <div class="amt">$41–65B <em>全球 AI 供應鏈 · 2030</em></div>
+            </div>
+            <div class="funnel-bar sam">
+              <div class="tag">REACH</div>
+              <div class="amt">$1.2B <em>東南亞半導體走廊</em></div>
+            </div>
+            <div class="funnel-bar som">
+              <div class="tag">OUR TAKE</div>
+              <div class="amt">$4.2M <em>第 3 年 · 檳城先行</em></div>
+            </div>
+          </div>
+          <p class="market-note">
+            以 <b>每年 18.5%</b> 成長——是全球平均的 3 倍。檳城每多接 1% 的供應商,就能再解鎖 $1,200 萬的年收入。
+          </p>
+        </div>
+
+        <div class="competitor-matrix">
+          <div class="mh">
+            <div>業者</div>
+            <div>觸及小供應商?</div>
+            <div>擁有資料管道?</div>
+            <div>台灣信任層?</div>
+          </div>
+          <div class="comp-row">
+            <div class="name">SAP / Siemens</div>
+            <div class="cell no">✕ 只做大客戶</div>
+            <div class="cell no">✕ 依賴雲端</div>
+            <div class="cell no">✕</div>
+          </div>
+          <div class="comp-row">
+            <div class="name">AWS / Azure</div>
+            <div class="cell no">✕ 自助服務</div>
+            <div class="cell no">✕ 超大雲</div>
+            <div class="cell no">✕</div>
+          </div>
+          <div class="comp-row">
+            <div class="name">Singtel / NTT</div>
+            <div class="cell no">✕</div>
+            <div class="cell yes">✓ 僅新加坡</div>
+            <div class="cell no">✕</div>
+          </div>
+          <div class="comp-row">
+            <div class="name">遠傳 / 台哥大</div>
+            <div class="cell no">✕</div>
+            <div class="cell no">✕ 無東南亞</div>
+            <div class="cell cell">— 僅台灣</div>
+          </div>
+          <div class="comp-row us">
+            <div class="name">ChainSight <em>(CHT)</em></div>
+            <div class="cell yes">✓ 免費補貼</div>
+            <div class="cell yes">✓ 14 條海纜</div>
+            <div class="cell yes">✓ 原生整合</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">資料來源 · Grand View Research 2024 · McKinsey SEA Digital 2024 · MIDA · SEMI · MIDF 2024 · 詳見附錄 p.16</div>
+      <div class="right">ChainSight · 06</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 06 · PRODUCT / SOLUTION (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 04</span>
+          <span class="cat">產品與解決方案</span>
+        </div>
+        <div class="tagline">三個 AI 小工具 + 一個儀表板,讓工廠現場的資料變成即時數字。</div>
+      </div>
+      <div class="pager"><b>07</b> / 16</div>
+    </div>
+    <div class="solution-body">
+      <h2 class="solution-hook">
+        我們做三個 AI 小工具,幫工廠現場的狀況變成大家看得懂的即時數字。
+      </h2>
+      <p class="solution-lede">
+        不講術語、不換設備。$240 的小電腦直接插上供應商原有的 PLC 與相機,72 小時內大客戶就能即時看見他們。
+      </p>
+
+      <div class="ai-cards">
+        <div class="ai-card">
+          <div class="role">01 · 盯著看</div>
+          <h3>Pulse<em>.</em></h3>
+          <div class="kicker">即時機台狀態、即時良率、即時出貨時間——每秒更新。</div>
+          <p class="how">
+            每家供應商的那台小電腦 <b>負責盯著機台</b>,每一秒都被分類成運轉、閒置、故障或維護。大客戶看到的是一張卡片:「Line 3 運轉率 87%,PO #4471 週一 14:00 準時出貨」。
+          </p>
+          <div class="result">
+            <div class="r-v">&lt; 2 秒</div>
+            <div class="r-l">從工廠現場<br>到大廠儀表板</div>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="role">02 · 提前警</div>
+          <h3>Predict<em>.</em></h3>
+          <div class="kicker">機台故障在發生前 7–14 天就被抓出來——訂單才不會趕不上交期。</div>
+          <p class="how">
+            同一批資料餵進一個 <b>已經學過日月光 ASE 三年生產歷史</b> 的 AI,它會在工廠的人自己還沒發現之前,指出哪台機器下週可能壞、哪種物料可能斷貨。
+          </p>
+          <div class="result">
+            <div class="r-v">85%</div>
+            <div class="r-l">提前預警<br>準確率目標</div>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="role">03 · 證得給</div>
+          <h3>Comply<em>.</em></h3>
+          <div class="kicker">原本兩個月的稽核工作,壓成一次點擊、三套法規。</div>
+          <p class="how">
+            一個受過真實稽核報告訓練的 AI <b>直接幫你寫好文件</b>:馬來西亞新隱私法、責任商業稽核、歐盟供應鏈揭露法。一鍵輸出,一份中英雙語的 PDF。
+          </p>
+          <div class="result">
+            <div class="r-v">一鍵</div>
+            <div class="r-l">取代 240 小時<br>的人工作業</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">AI 是必要的——馬來西亞缺 55,000 名工程師,自動化是唯一補缺的方法</div>
+      <div class="right">ChainSight · 07</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 07 · TECHNICAL ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 05</span>
+          <span class="cat">技術架構</span>
+        </div>
+        <div class="tagline">一台 $240 的小電腦,資料留在工廠,走中華電信自己的海纜回來。五個步驟。</div>
+      </div>
+      <div class="pager"><b>08</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">為熱帶氣候而生,為在地法規而造</div>
+      <h2 class="tech-hero">一個 <em>$240 的小電腦</em>。五個步驟。你的資料永遠不離開工廠。</h2>
+      <p class="lede" style="font-size: 13.5px; margin-bottom: 18px;">
+        這套設計不是套用雲端模板——是為了東南亞三個最難的限制而造:熱帶高溫、被擋住的 5G 頻譜、以及馬來西亞新隱私法。
+      </p>
+
+      <div class="tech-layout">
+        <div>
+          <div class="tech-steps">
+            <div class="tech-step">
+              <div class="step-n">01.</div>
+              <div>
+                <div class="step-t">一台小小的工業電腦</div>
+                <div class="step-d"><b>$240 的工業盒</b>(NVIDIA Jetson),配 Wi-Fi 6、行動備援、IP65 防水防塵機殼,可以扛 40°C + 濕度。直接插上供應商原本就有的感測器。</div>
+              </div>
+            </div>
+            <div class="tech-step">
+              <div class="step-n">02.</div>
+              <div>
+                <div class="step-t">AI 直接跑在工廠現場</div>
+                <div class="step-d">Pulse 與 Predict 都<b>跑在工廠裡,不跑在雲端</b>。原始良率、機台影像、作業員紀錄,都不會越過工廠的牆。</div>
+              </div>
+            </div>
+            <div class="tech-step">
+              <div class="step-n">03.</div>
+              <div>
+                <div class="step-t">只有摘要數字會外送</div>
+                <div class="step-d">小電腦只發送一個加密封包(不到 2 KB),裡面只有狀態碼和 KPI。其他全部留在供應商自己的廠裡。</div>
+              </div>
+            </div>
+            <div class="tech-step">
+              <div class="step-n">04.</div>
+              <div>
+                <div class="step-t">走中華電信自家管道</div>
+                <div class="step-d">封包先走 <b>中華電信的企業網路</b>,再透過 <b>中華電信自己的海底電纜</b> 送回台灣——不走 AWS、不走 Azure、不走中國線路。</div>
+              </div>
+            </div>
+            <div class="tech-step">
+              <div class="step-n">05.</div>
+              <div>
+                <div class="step-t">大廠看到一張即時卡片</div>
+                <div class="step-d">大客戶在中華電信自家的台灣機房打開儀表板,背後是保護台灣政府系統的同一支資安團隊。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tech-side">
+          <div class="side-label">三個一般雲端解不了的問題</div>
+          <h3>所以我們 <em>只能自己設計。</em></h3>
+          <p>
+            <b>1 · 沒有企業 5G。</b> 馬來西亞把 5G 權限只給一間本地公司,外商取得不了頻譜。所以底層連線我們用 <b>Wi-Fi 6</b>——便宜、能跑、整個區域都合法。
+          </p>
+          <p>
+            <b>2 · 2025 年 6 月隱私法開罰。</b> 原始生產資料一旦離開工廠,罰款上看百萬馬幣。我們的做法:除了摘要 KPI 什麼都不出。
+          </p>
+          <p>
+            <b>3 · 熱帶環境。</b> 硬體密封耐 40°C + 85% 濕度,有備援電源,即使斷線也能撐 72 小時不停擺。
+          </p>
+          <div class="reg-pills">
+            <span class="reg-pill ok">馬 隱 私 法 2025</span>
+            <span class="reg-pill ok">馬 資 安 法 2024</span>
+            <span class="reg-pill ok">NIMP 2030</span>
+            <span class="reg-pill ok">歐 CSRD</span>
+            <span class="reg-pill ok">RBA 7.0</span>
+            <span class="reg-pill warn">越南 · 僅 Wi-Fi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">每一個技術選擇都可以追溯到一個真實的東南亞限制——熱帶氣候、被封閉的 5G 頻譜、馬來西亞隱私法、或台灣供應鏈政策</div>
+      <div class="right">ChainSight · 08</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 09 · BUSINESS MODEL (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 06</span>
+          <span class="cat">商業模式</span>
+        </div>
+        <div class="tagline">大廠付費、小供應商免費用。越多供應商加入,系統就越有價值。</div>
+      </div>
+      <div class="pager"><b>09</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">錢怎麼流 · 雙邊補貼</div>
+      <h2 class="bm-hero">大客戶付費。小供應商 <em>免費</em> 部署。</h2>
+      <p class="bm-lede">
+        晶圓廠每月付席次費買供應商可見度,這筆錢用來補貼小供應商免費安裝。每多一張大廠合約就多 20–40 家小供應商加入。網路越密,管道越黏。
+      </p>
+
+      <div class="bm-grid">
+        <div class="bm-side pay">
+          <div class="role">A 面 · 付費</div>
+          <div class="who">大晶圓廠</div>
+          <div class="price-row">
+            <div class="price">$5–15K</div>
+            <div class="pu">每廠<br>每月</div>
+          </div>
+          <ul>
+            <li>Intel 馬、ASE、Infineon Kulim、Inari</li>
+            <li>席次費隨可見供應商數量升級</li>
+            <li>企業版加購自動稽核報告</li>
+          </ul>
+        </div>
+
+        <div class="bm-arrow">⇄</div>
+
+        <div class="bm-side free">
+          <div class="role">B 面 · 免費</div>
+          <div class="who">小供應商</div>
+          <div class="price-row">
+            <div class="price">$0</div>
+            <div class="pu">預付 0<br>硬體租賃包含</div>
+          </div>
+          <ul>
+            <li>只有透過平台贏到新訂單才計費</li>
+            <li>中華電信提供小電腦 2 年租賃,由廠方費回收</li>
+            <li>成功計費:新訂單金額的 3%</li>
+          </ul>
+        </div>
+
+        <div class="bm-econ">
+          <div class="role">單位經濟 · 每家 SME 每年</div>
+          <div class="econ-row"><div>廠方端分攤</div><div class="v">$3,600</div></div>
+          <div class="econ-row"><div>SME 成功計費</div><div class="v">$1,200</div></div>
+          <div class="econ-row"><div>硬體租賃攤提</div><div class="v">−$600</div></div>
+          <div class="econ-row"><div>雲端與支援</div><div class="v">−$1,200</div></div>
+          <div class="econ-row"><div>業務與夥伴</div><div class="v">−$540</div></div>
+          <div class="total">
+            <div class="big">$2,460</div>
+            <div class="big-l">年淨貢獻 · 毛利率 51%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">每家供應商回本 7.4 個月 · LTV/CAC ≈ 4.8× · 毛利率到第 5 年擴至 66%(雲端成本攤在 260 家供應商上)</div>
+      <div class="right">ChainSight · 09</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 10 · CHT MOAT (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 07</span>
+          <span class="cat">中華電信護城河</span>
+        </div>
+        <div class="tagline">海纜 + 馬來西亞子公司 + ASE 合作案例,這三個同時有的只有中華電信。</div>
+      </div>
+      <div class="pager"><b>10</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">中華電信的主場戰役</div>
+      <h2 class="why-hero">我們覺得這一題只有中華電信做得到,其他家拿不到這三個要素。</h2>
+      <p class="why-lede">
+        每一家台灣電信業者都擁有其中一部分,但<b>只有中華電信同時擁有這三樣</b>。以下是 ChainSight 要槓桿的三根柱子。
+      </p>
+
+      <div class="why-pillars">
+        <div class="why-pillar">
+          <div class="p-num">i<em>.</em></div>
+          <h3>14 條進入<br>東南亞的海底電纜</h3>
+          <p>
+            中華電信擁有或共同擁有的海纜,登陸馬來西亞、新加坡與越南的數量比 <b>任何一家台灣公司都多</b>。這條管道就是我們的信任層——一條從檳城工廠到台灣總部、<b>不經中國也不經美國</b>的路。
+          </p>
+          <div class="mini"><b>在 ChainSight 裡</b> 作為每一筆資料封包背後的骨幹</div>
+        </div>
+        <div class="why-pillar">
+          <div class="p-num">ii<em>.</em></div>
+          <h3>2025/12 剛成立的<br>馬來西亞子公司</h3>
+          <p>
+            中華電信馬來西亞 Sdn. Bhd. 才成立不到半年,但它是 <b>第一家</b> 能在檳城當地銷售、請款、支援、雇人的台灣電信。沒有它,整個計畫就落不了地——而且沒人有。
+          </p>
+          <div class="mini"><b>在 ChainSight 裡</b> 作為在地法人 + 現場工程團隊</div>
+        </div>
+        <div class="why-pillar">
+          <div class="p-num">iii<em>.</em></div>
+          <h3>日月光 ASE<br>已經在跑的智慧工廠</h3>
+          <p>
+            中華電信已經在 <b>日月光台灣廠</b> 運作 5G 企業專網、AGV 車隊與 AOI 影像系統。日月光也是檳城最大的封測廠。ChainSight 的 Phase 1 是一場 <b>案例轉移</b>——不是從零開始的新銷售。
+          </p>
+          <div class="mini"><b>在 ChainSight 裡</b> 作為第 1 年錨定客戶 · 零銷售週期</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">對中華電信集團的營收貢獻 · 第 3 年 $4.2M → 第 5 年 $24M · 每一塊錢都是中華電信連線+資安+機房的收入,零自相殘殺</div>
+      <div class="right">ChainSight · 10</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 11 · FINANCIAL (KEY) ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row key">
+          <span class="chap">CH. 08</span>
+          <span class="cat">財務</span>
+        </div>
+        <div class="tagline">第 3 年底開始賺錢,第 5 年營收 $24M,毛利率 66%。</div>
+      </div>
+      <div class="pager"><b>11</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">5 年展望 · 保守基本情境</div>
+      <h2 class="fin-hero">第 3 年損益兩平。<em>$24M</em> 進入第 5 年。</h2>
+      <p class="lede" style="font-size: 14px; margin-bottom: 22px;">
+        基本情境不假設任何政府補助,也不假設 5G 頻譜——完全素面,還是會賺。
+      </p>
+
+      <div class="fin-layout">
+        <div class="fin-table-wrap">
+          <table class="fin-table">
+            <thead>
+              <tr>
+                <th>$USD 百萬</th>
+                <th>Y1</th>
+                <th>Y2</th>
+                <th>Y3</th>
+                <th>Y4</th>
+                <th>Y5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>小供應商數</td><td>3</td><td>30</td><td>80</td><td>160</td><td>260</td></tr>
+              <tr><td>大廠儀表板</td><td>1</td><td>3</td><td>5</td><td>8</td><td>12</td></tr>
+              <tr class="revenue"><td>總營收</td><td>0.28</td><td>1.30</td><td>4.20</td><td>10.8</td><td>24.0</td></tr>
+              <tr><td>交付成本</td><td>−0.35</td><td>−0.78</td><td>−1.68</td><td>−4.10</td><td>−8.16</td></tr>
+              <tr><td>毛利率</td><td>—</td><td>40%</td><td>60%</td><td>62%</td><td>66%</td></tr>
+              <tr><td>營運費用</td><td>−0.55</td><td>−0.92</td><td>−1.60</td><td>−3.10</td><td>−5.40</td></tr>
+              <tr class="ebitda"><td>營業利益</td><td>−0.62</td><td>−0.40</td><td>+0.92</td><td>+3.60</td><td>+10.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fin-cards">
+          <div class="fin-card">
+            <div class="lbl">損益兩平</div>
+            <div class="vv">第 <em>3</em> 年 Q4</div>
+            <div class="sub">累計投資 $340 萬美元後達成,現金轉正再晚 6 個月。</div>
+          </div>
+          <div class="fin-card" style="border-left-color: var(--sage)">
+            <div class="lbl">第 5 年毛利</div>
+            <div class="vv"><em>66%</em></div>
+            <div class="sub">攤在 260 家供應商上,SME 成功計費為近乎零邊際成本。</div>
+          </div>
+          <div class="fin-assumptions">
+            <div class="label">關鍵假設</div>
+            <ul>
+              <li>日月光 ASE 檳城確認為第 1 年錨定</li>
+              <li>平均每廠月費 $10K(落在 $5–15K 中位)</li>
+              <li>小供應商流失率 ≤ 每年 8%</li>
+              <li>越南第 3 年透過 Viettel 合資展開</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">未計入的上檔 · NIMP 補助潛力約 $150 萬 · Comply 溢價訂價 · 越南加速展開</div>
+      <div class="right">ChainSight · 11</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 12 · ROADMAP ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 09</span>
+          <span class="cat">執行計畫</span>
+        </div>
+        <div class="tagline">$300 萬預算、18 個月、分 4 階段走。ASE 第一年就會成為客戶。</div>
+      </div>
+      <div class="pager"><b>12</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">18 個月 · 4 階段 · 第一個錨定客戶已在手</div>
+      <h2 class="rm-hero">$300 萬、18 個月。Phase 1 是 <em>案例轉移</em>,不是新銷售。</h2>
+      <p class="rm-lede">
+        第一家錨定客戶——ASE 日月光——已經是中華電信台灣的客戶。我們不是切入新關係,是把既有關係延伸過海峽。
+      </p>
+
+      <div class="rm-track">
+        <div class="rm-phase">
+          <div class="ph-label">PHASE 01 · M1–6</div>
+          <h3>錨定 &amp; <em>Pulse</em></h3>
+          <div class="cost">$90 萬 · 檳城</div>
+          <p>把 Pulse 部署在 3 家 ASE 檳城的供應商,同時為 ASE 開通 Fab Portal。<b>團隊 12 人</b>,一半在台北,一半在檳城。</p>
+          <div class="kpi">→ 3 家上線。2 秒以下延遲。ASE 合約簽妥。</div>
+        </div>
+
+        <div class="rm-phase">
+          <div class="ph-label">PHASE 02 · M7–12</div>
+          <h3>Predict &amp; <em>擴張</em></h3>
+          <div class="cost">$120 萬 · 檳城 + Kulim</div>
+          <p>推出 Predict。簽下 Intel 馬或 Infineon 作為第 2 錨定客戶。供應商擴張到 <b>30 家</b>。</p>
+          <div class="kpi">→ 30 家。85% 預測準確率。$1.2M 年營收。</div>
+        </div>
+
+        <div class="rm-phase">
+          <div class="ph-label">PHASE 03 · M13–18</div>
+          <h3>Comply &amp; <em>檳城</em></h3>
+          <div class="cost">$90 萬 · 檳城全面</div>
+          <p>推出 Comply。5 個大廠儀表板上線,<b>80 家供應商</b> 加入。損益轉正;之後自有資金運轉。</p>
+          <div class="kpi">→ 80 家。5 大廠。$4.2M 年營收。</div>
+        </div>
+
+        <div class="rm-phase">
+          <div class="ph-label">PHASE 04 · M19–30</div>
+          <h3>越南 &amp; <em>新加坡</em></h3>
+          <div class="cost">自有資金</div>
+          <p>透過 Viettel 合資複製到越南(Amkor、Hana Micron)與新加坡燈塔客戶(GlobalFoundries、Micron)。</p>
+          <div class="kpi">→ $10.8M 年營收。3 國在地。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">團隊擴張 12 → 20 → 32 FTE · 累計硬體資本支出 $42 萬 · 18 個月總投資 $300 萬</div>
+      <div class="right">ChainSight · 12</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 13 · RISKS ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 10</span>
+          <span class="cat">風險與應對</span>
+        </div>
+        <div class="tagline">我們想到 5 個主要風險,每一個都有對應的處理方式和負責人。</div>
+      </div>
+      <div class="pager"><b>13</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">主要風險與對應措施</div>
+      <h2 class="risk-hero">五項主要風險 · <em>對應措施皆已編入計畫</em>。</h2>
+      <p class="risk-lede">
+        以下為本案盤點的五項主要風險,涵蓋法規、客戶價值、技術與整合層面。每一項皆列出責任人與具體措施,均已納入 18 個月執行計畫。
+      </p>
+
+      <div class="risk-list">
+        <div class="risk-row">
+          <div class="r-cat">5G 頻譜</div>
+          <div class="r-risk">馬來西亞 5G 頻譜由一家本地公司獨家持有,<b>外商取不到頻譜</b>,「5G 智慧工廠」在出發前就死了。</div>
+          <div class="r-fix"><b>基本層用 Wi-Fi 6。</b>5G 只是 Celcom 夥伴提供的選配升級,產品本身完全不依賴中華電信擁有馬來西亞頻譜。</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="r-cat">資料隱私</div>
+          <div class="r-risk">馬來西亞 2025 年 6 月生效的新隱私法,把原始生產資料離開工廠訂為 <b>七位數罰款</b>,大廠的 NDA 甚至更嚴。</div>
+          <div class="r-fix"><b>原始資料絕不離廠。</b>只有匿名化的摘要數字上傳,而且只走中華電信自家海纜。馬子公司第 1 天就指派 DPO。</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="r-cat">為什麼付</div>
+          <div class="r-risk">大廠為什麼真的願意每月付 $5–15K?採購部門要看到跨得過門檻的 ROI 數字。</div>
+          <div class="r-fix"><b>3.2× 報酬。</b>一年錯失 4 張訂單 × 每張 $25 萬 = $100 萬。訂閱費一年 $12 萬,計算第一關就過。</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="r-cat">AI 冷啟動</div>
+          <div class="r-risk">全新的供應商沒有任何歷史資料,AI 第一天要怎麼跑?</div>
+          <div class="r-fix"><b>我們預先用日月光台灣 3 年資料訓練過</b>——1800 萬筆標記事件。新供應商用該模型 72 小時暖機,本地跑 30 天後再微調。</div>
+        </div>
+
+        <div class="risk-row">
+          <div class="r-cat">ERP 整合</div>
+          <div class="r-risk">連 SAP 或 Oracle 既慢又貴、人才又稀缺,預算很容易就掉到這個無底洞。</div>
+          <div class="r-fix"><b>Phase 1–3 完全不碰 ERP。</b>我們直接讀工廠現場的控制器,ERP 連接器是 Phase 5 經由系統整合商夥伴加購的項目。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">完整風險清冊與季度更新由中華電信馬來西亞子公司 DPO 與 ChainSight 營運負責人共同維護</div>
+      <div class="right">ChainSight · 13</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 14 · IMPACT ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 11</span>
+          <span class="cat">衝擊與擴展</span>
+        </div>
+        <div class="tagline">同一套做法可以複製到整個東南亞半導體走廊,第 5 年營收 $24M。</div>
+      </div>
+      <div class="pager"><b>14</b> / 16</div>
+    </div>
+    <div class="slide-body">
+      <div class="eyebrow accent">營收之外的策略成果</div>
+      <h2 class="impact-hero">同一套劇本,複製到 <em>東南亞整條</em> 半導體走廊。</h2>
+      <p class="impact-lede">
+        每個新市場都用同樣三個 AI 小幫手、同樣中華電信資料管道、同樣訂價模式。第三個市場上線的邊際成本,比第一個低 70%。
+      </p>
+
+      <div class="impact-layout">
+        <div class="impact-levels">
+          <div class="impact-level">
+            <div class="n">01<em>.</em></div>
+            <div>
+              <h4>對供應商</h4>
+              <p>每一家加入的供應商看到 <b>機台運轉率 +12%</b>、<b>非預期停機減半</b>、<b>30–40% 庫存現金釋出</b>,並透過大廠可見度接到更大的訂單。硬體免費,沒有資本門檻。</p>
+            </div>
+          </div>
+          <div class="impact-level">
+            <div class="n">02<em>.</em></div>
+            <div>
+              <h4>對大晶圓廠</h4>
+              <p>每一家大廠取得 <b>對整個供應商網路的即時可見度</b>,把 48 小時的電話追蹤換成活的儀表板。訂閱 3.2× 報酬。歐盟供應鏈揭露變成可稽核、可辯護。</p>
+            </div>
+          </div>
+          <div class="impact-level">
+            <div class="n">03<em>.</em></div>
+            <div>
+              <h4>對中華電信與台灣</h4>
+              <p>中華電信成為台灣境外供應鏈的 <b>事實上信任層</b>——一項經濟安全資產。在十年內把台灣封測四雄(日月光、力成、京元、南茂)鎖進中華電信自家跨境連線。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="replication">
+          <div class="rep-label">擴張路徑</div>
+          <div class="rep-path">
+            <div class="rep-node now">檳城</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node">Kedah</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node">Johor</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node next">河內</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node next">胡志明</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node">新加坡</div>
+            <span class="rep-arr">→</span>
+            <div class="rep-node">泰國</div>
+          </div>
+          <p class="rep-vision">
+            同樣三個 AI 小幫手、同樣管道、同樣訂價。<b>第三個市場邊際成本低 70%</b>——硬體 SKU、資安手冊、ML 模型都已經產品化。
+          </p>
+          <div class="rep-big">$24M · 260 家 · 12 廠</div>
+          <div class="rep-big-l">第 5 年目標 · 3 國在地 · 毛利率 66%</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">長期選擇權 · 同平台可延伸到電動車電池供應鏈(泰國、印尼)與製藥代工廠(新加坡)</div>
+      <div class="right">ChainSight · 14</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 15 · CLOSING ============ -->
+  <section class="slide closing">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">CH. 12</span>
+          <span class="cat">我們的請求</span>
+        </div>
+        <div class="tagline">$300 萬、18 個月、請批准。管道有了、客戶有了,就等一個「好」。</div>
+      </div>
+      <div class="pager"><b>15</b> / 16</div>
+    </div>
+    <div class="closing-inner">
+      <div>
+        <div class="eyebrow">我們的請求</div>
+        <h2 class="closing-title-cn">
+          $300 萬。<em>18 個月。</em><br>只需一個綠燈。
+        </h2>
+        <p class="closing-sub">
+          ChainSight 把中華電信的海底電纜、馬來西亞子公司、越南 Viettel 合資與日月光 ASE 案例,整合成 <b>唯一可信的資料信任層</b>,承接台灣半導體供應鏈遷徙。我們已經有管道、已經有客戶——只差一個「好,開始」。
+        </p>
+      </div>
+
+      <div class="closing-grid">
+        <div>
+          <div class="c">創新</div>
+          <p>雙邊 AI 商業模式架在 <b>電信護城河</b> 上。沒有一家台灣或全球競爭者同時擁有這三層。</p>
+        </div>
+        <div>
+          <div class="c">可行性</div>
+          <p>日月光 ASE 已經是中華電信台灣的客戶。Phase 1 是 <b>案例轉移</b>,不是新銷售。</p>
+        </div>
+        <div>
+          <div class="c">衝擊</div>
+          <p>第 5 年 <b>$24M 年營收</b>,把台灣半導體供應鏈鎖進中華電信自家的管道。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 16 · 資料來源 ============ -->
+  <section class="slide">
+    <div class="chrome">
+      <div class="brand-group">
+        <div class="brand-row">
+          <span class="chap">附錄</span>
+          <span class="cat">資料來源</span>
+        </div>
+        <div class="tagline">本提案所有數字均可追溯 —— <em>官方來源、連結、查詢日期</em> 齊備。</div>
+      </div>
+      <div class="pager"><b>16</b> / 16</div>
+    </div>
+    <div class="ref-body">
+      <div class="eyebrow accent">Data Sources &amp; References · 2026/04</div>
+      <h2 class="ref-hook">每一個數字都有 <em>連結</em> —— 可直接跳轉驗證。</h2>
+      <p class="ref-lede">
+        本份提案所有市場數據、投資金額、時程、法規、政策皆來自官方政府機關、頂級研究機構、台資商會、與中華電信對外公告。所有連結於 2026/04 驗證可存取。
+      </p>
+
+      <div class="ref-grid">
+        <div class="ref-col">
+          <h3>A · 市場痛點與 AI 使用率</h3>
+          <div class="ref-list">
+            <div class="ref-item">
+              <div class="rn">01</div>
+              <div class="rtxt"><b>經濟部國際貿易署 2023</b> · 馬來西亞 AI 使用率不足四成,落後東南亞其他國家(Adobe 調查)。</div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">02</div>
+              <div class="rtxt"><b>經濟部國際貿易署 2025/12</b> · 馬來西亞目標於 2030 年建成完整 AI 生態體系(NIMP 2030、國家 AI 路線圖)。</div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">03</div>
+              <div class="rtxt"><b>經濟部國際貿易署 2026/01</b> · AI 企業成為馬主要出口動能,2024 年 $10.3 億美元、占數位出口約 50%。</div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">04</div>
+              <div class="rtxt"><b>The Global AI Index · Tortoise Media</b> · 新加坡世界第 3、AI Intensity 全球第 1,馬國鄰國互補。<br><a href="https://www.tortoisemedia.com/data/global-ai#rankings">tortoisemedia.com/data/global-ai#rankings</a></div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">05</div>
+              <div class="rtxt"><b>經濟部國際貿易署 2026/02</b> · 東南亞科技寵兒:柔佛資料中心 2020→2024 由 10MW 至 1,500MW、Intel $70 億 3D 封裝廠。</div>
+            </div>
+          </div>
+
+          <h3 style="margin-top:16px;">B · 中華電信與網路基建</h3>
+          <div class="ref-list">
+            <div class="ref-item">
+              <div class="rn">06</div>
+              <div class="rtxt"><b>中華電信官方 2025/12/01</b> · 吉隆坡辦事處升格為「中華電信馬來西亞子公司」。<br><a href="https://www.cht.com.tw/home/enterprise/news/latest-news/2025/1201-1855">cht.com.tw/.../2025/1201-1855</a></div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">07</div>
+              <div class="rtxt"><b>經濟日報 / UDN Money 2026 MWC</b> · CHT 與 Nokia、Ericsson 簽署 5G-Advanced 與 AI 智慧網路備忘錄(AI-Native 架構)。<br><a href="https://money.udn.com/money/story/5612/9359491">money.udn.com/money/story/5612/9359491</a></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ref-col">
+          <h3>C · 投資環境、台商結構與政策</h3>
+          <div class="ref-list">
+            <div class="ref-item">
+              <div class="rn">08</div>
+              <div class="rtxt"><b>PwC Taiwan 2026/02/25</b> · 馬來西亞 2026 新投資獎勵架構(NIA)六大維度評分表、雙軌獎勵政策。<br><a href="https://www.pwc.tw/zh/news/press-release/press-20260225.html">pwc.tw/zh/news/press-release/press-20260225.html</a></div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">09</div>
+              <div class="rtxt"><b>DigiKnow · 馬國勞動結構</b> · 製造業薪資高於周邊、聘僱移工受配額限制,缺工轉向 AI 韌性。<br><a href="https://www.digiknow.com.tw/knowledge/67876509e771d">digiknow.com.tw/knowledge/67876509e771d</a></div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">10</div>
+              <div class="rtxt"><b>遠見雜誌 GVM</b> · 馬國生態系、基建、高階技術人員培訓三大觀察指標。<br><a href="https://www.gvm.com.tw/article/115255">gvm.com.tw/article/115255</a></div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">11</div>
+              <div class="rtxt"><b>UDN Money · 亞洲台灣商會聯合總會</b> · 台資銀行跨國服務、新馬政府共識、AI / 雲端 / 綠能借東風。<br><a href="https://money.udn.com/money/story/5599/9218290">money.udn.com/money/story/5599/9218290</a></div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">12</div>
+              <div class="rtxt"><b>駐馬來西亞台北經濟文化辦事處 2025/09</b> · 台商在馬累計製造業投資 $162.2 億美元、外資第 9 位、第 3 大外資雇主。</div>
+            </div>
+          </div>
+
+          <h3 style="margin-top:16px;">D · 產業市場與財務模型原始資料</h3>
+          <div class="ref-list">
+            <div class="ref-item">
+              <div class="rn">13</div>
+              <div class="rtxt"><b>MIDA · Malaysian Investment Development Authority</b> · 82% 檳城供應商仍用 Excel、48 小時產能延遲、$150 億馬國半導體資本支出。</div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">14</div>
+              <div class="rtxt"><b>MIDF Research 2024 · SEMI 2024</b> · 馬國半導體設備市場 2026 CAGR 8.3%、工程師缺口 55K、封測產能占全球 13%。</div>
+            </div>
+            <div class="ref-item">
+              <div class="rn">15</div>
+              <div class="rtxt"><b>Grand View Research 2024 · McKinsey SEA Digital 2024</b> · TAM $41–65B 全球 AI 供應鏈 2030、SAM $1.2B 東南亞半導體走廊。</div>
+            </div>
+          </div>
+
+          <div class="ref-note">
+            <b>追溯原則:</b>所有數字均標註來源與日期,可直接驗證;Tier-1 政府文件與官方公告優先採用,AI 推估項目於原始備忘錄明確標註(參見 market research markdown)。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <div class="left">連結於 2026/04 驗證可存取 · 若連結失效請聯繫提案團隊索取備份 · 本份提案所有數據均可追溯</div>
+      <div class="right">ChainSight · 16</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

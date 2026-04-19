@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChainSight — CHT AI-Enabled Business Competition Portal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --cht-blue: #003B7A;
+    --cht-blue-dark: #00264d;
+    --cht-blue-light: #0091DA;
+    --cht-orange: #F58220;
+    --cht-green: #8CC63F;
+    --cht-green-dark: #5c8e1e;
+    --text: #1f2d3d;
+    --text-light: #5a6a7a;
+    --text-muted: #8999a8;
+  }
+  html, body {
+    font-family: 'Microsoft JhengHei', 'PingFang TC', 'Segoe UI', Arial, sans-serif;
+    background: #eef2f7;
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #001a33 0%, #003B7A 50%, #0091DA 100%);
+    color: white;
+    padding: 60px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 30%, rgba(245,130,32,0.18), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(140,198,63,0.16), transparent 50%);
+  }
+  .hero-stripe {
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg,
+      var(--cht-orange) 0%, var(--cht-orange) 33%,
+      var(--cht-green) 33%, var(--cht-green) 66%,
+      var(--cht-blue-light) 66%, var(--cht-blue-light) 100%);
+  }
+  .hero-inner {
+    max-width: 1100px; margin: 0 auto;
+    position: relative; z-index: 2;
+  }
+  .hero .eyebrow {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--cht-orange); font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-size: 72px; font-weight: 800; line-height: 1;
+    margin-bottom: 18px;
+  }
+  .hero h1 span { color: var(--cht-orange); }
+  .hero .tagline {
+    font-size: 22px; font-weight: 300; line-height: 1.5;
+    max-width: 820px; opacity: 0.94;
+  }
+  .hero .tagline b { color: var(--cht-green); font-weight: 600; }
+
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 24px;
+    margin-top: 32px; font-size: 12px; opacity: 0.88;
+  }
+  .hero-meta div strong { color: var(--cht-orange); font-weight: 700; }
+
+  /* Nav pills */
+  .lang-toggle {
+    position: absolute; top: 24px; right: 40px; z-index: 3;
+    display: flex; gap: 6px; font-size: 13px;
+  }
+  .lang-toggle a {
+    color: white; text-decoration: none;
+    padding: 6px 14px; border-radius: 14px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.15s;
+  }
+  .lang-toggle a:hover { background: var(--cht-orange); border-color: var(--cht-orange); }
+  .lang-toggle a.active { background: var(--cht-orange); border-color: var(--cht-orange); font-weight: 600; }
+
+  /* Main content */
+  .main {
+    max-width: 1100px; margin: -40px auto 0;
+    padding: 0 40px 60px;
+    position: relative; z-index: 3;
+  }
+
+  .section-title {
+    font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--cht-blue); font-weight: 700;
+    margin: 40px 0 14px;
+    padding-left: 14px;
+    border-left: 4px solid var(--cht-orange);
+  }
+
+  /* Stage cards */
+  .stage-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .stage {
+    background: white;
+    border-radius: 12px;
+    padding: 24px 26px;
+    box-shadow: 0 2px 20px rgba(0,30,70,0.08);
+    border-top: 5px solid var(--cht-blue);
+    display: flex; flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stage:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,30,70,0.15); }
+  .stage.active { border-top-color: var(--cht-orange); }
+  .stage.upcoming { border-top-color: var(--cht-green); }
+  .stage.future { border-top-color: var(--text-muted); opacity: 0.85; }
+
+  .stage-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+  .stage-phase {
+    font-size: 10px; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--text-muted);
+    font-weight: 700;
+  }
+  .stage-status {
+    font-size: 10px; padding: 2px 8px; border-radius: 10px;
+    font-weight: 700; letter-spacing: 0.5px;
+  }
+  .status-done { background: #e6f5d2; color: var(--cht-green-dark); }
+  .status-now { background: #fff1d9; color: var(--cht-orange); }
+  .status-next { background: #e0f0ff; color: var(--cht-blue); }
+  .status-future { background: #eceef2; color: var(--text-muted); }
+
+  .stage h2 {
+    font-size: 22px; font-weight: 800; color: var(--cht-blue);
+    margin: 6px 0 4px; line-height: 1.2;
+  }
+  .stage .subtitle {
+    font-size: 12px; color: var(--text-light);
+    margin-bottom: 16px; line-height: 1.5;
+  }
+  .stage .links {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-top: auto;
+  }
+  .stage .link {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f5f8fc;
+    padding: 10px 14px; border-radius: 6px;
+    text-decoration: none; color: var(--cht-blue);
+    font-size: 13px; font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+  .stage .link:hover { background: var(--cht-orange); color: white; border-color: var(--cht-orange); }
+  .stage .link.primary { background: var(--cht-blue); color: white; }
+  .stage .link.primary:hover { background: var(--cht-orange); }
+  .stage .link.disabled { background: #eceef2; color: var(--text-muted); cursor: not-allowed; pointer-events: none; }
+  .stage .link .arr { font-size: 15px; }
+  .stage .link .flag { font-size: 10px; opacity: 0.75; font-weight: 500; margin-left: 6px; }
+
+  /* Secondary resources */
+  .resources {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px; margin-top: 14px;
+  }
+  .res-card {
+    background: white; border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 12px rgba(0,30,70,0.06);
+    display: flex; align-items: center; gap: 14px;
+    text-decoration: none; color: var(--text);
+    border-left: 4px solid var(--cht-blue-light);
+    transition: all 0.15s;
+  }
+  .res-card:hover { transform: translateX(3px); border-left-color: var(--cht-orange); }
+  .res-card .ic {
+    width: 42px; height: 42px; border-radius: 8px;
+    background: #f0f5fb; color: var(--cht-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800; flex-shrink: 0;
+  }
+  .res-card .body h3 { font-size: 14px; font-weight: 700; color: var(--cht-blue); }
+  .res-card .body p { font-size: 11px; color: var(--text-light); margin-top: 2px; line-height: 1.4; }
+
+  /* Key facts strip */
+  .facts {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin-top: 10px;
+    background: white; border-radius: 12px;
+    padding: 22px 26px;
+    box-shadow: 0 2px 20px rgba(0,30,70,0.08);
+  }
+  .fact { border-left: 3px solid var(--cht-orange); padding-left: 14px; }
+  .fact .v { font-size: 26px; font-weight: 800; color: var(--cht-blue); line-height: 1; }
+  .fact .l { font-size: 11px; color: var(--text-light); margin-top: 4px; line-height: 1.4; }
+
+  /* Footer */
+  footer {
+    background: var(--cht-blue-dark);
+    color: white;
+    padding: 30px 40px;
+    margin-top: 40px;
+    font-size: 12px;
+    text-align: center;
+    opacity: 0.9;
+  }
+  footer .cht {
+    font-size: 13px;
+    color: var(--cht-orange);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  footer a { color: var(--cht-green); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 48px; }
+    .hero .tagline { font-size: 17px; }
+    .stage-grid { grid-template-columns: 1fr; }
+    .resources { grid-template-columns: 1fr; }
+    .facts { grid-template-columns: 1fr 1fr; }
+    .lang-toggle { top: 16px; right: 20px; }
+  }
+
+  /* i18n */
+  [lang-en] { display: none; }
+  html[data-lang="en"] [lang-zh] { display: none; }
+  html[data-lang="en"] [lang-en] { display: inline; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-stripe"></div>
+  <div class="lang-toggle">
+    <a href="#" onclick="setLang('zh');return false;" id="lang-zh-btn" class="active">中文</a>
+    <a href="#" onclick="setLang('en');return false;" id="lang-en-btn">EN</a>
+  </div>
+  <div class="hero-inner">
+    <div class="eyebrow" lang-zh>中華電信 AI 商業提案競賽 · 專案入口</div>
+    <div class="eyebrow" lang-en>CHT AI-Enabled Business Competition · Project Portal</div>
+    <h1>Chain<span>Sight</span></h1>
+    <div class="tagline" lang-zh>
+      以 AI 打造的<b>供應鏈可信任資料層</b>,將檳城 4,000+ 家半導體中小供應商轉化為即時、可稽核的合格夥伴——完全架構在中華電信的海纜網路與馬來西亞子公司之上。
+    </div>
+    <div class="tagline" lang-en>
+      An AI-powered <b>supply chain trust layer</b> turning Penang's 4,000+ semiconductor SMEs into real-time, audit-ready suppliers — built entirely on CHT's submarine-cable network and Malaysia subsidiary.
+    </div>
+    <div class="hero-meta">
+      <div lang-zh><strong>目標市場:</strong> 馬來西亞檳城 → 越南 → 新加坡</div>
+      <div lang-en><strong>Target:</strong> Malaysia Penang → Vietnam → Singapore</div>
+      <div lang-zh><strong>時程:</strong> 2026 年初賽 · 18 個月落地</div>
+      <div lang-en><strong>Timeline:</strong> 2026 First Round · 18-month rollout</div>
+      <div lang-zh><strong>提交單位:</strong> 中華電信 Chunghwa Telecom</div>
+      <div lang-en><strong>Submitted by:</strong> Chunghwa Telecom</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="facts">
+    <div class="fact">
+      <div class="v">82%</div>
+      <div class="l" lang-zh>檳城 SME 仍用 Excel 管理工廠</div>
+      <div class="l" lang-en>Penang SMEs still on Excel</div>
+    </div>
+    <div class="fact">
+      <div class="v">$1.2 B</div>
+      <div class="l" lang-zh>SAM — 東南亞半導體 SME + 晶圓廠</div>
+      <div class="l" lang-en>SAM — SEA semiconductor SME + fab</div>
+    </div>
+    <div class="fact">
+      <div class="v">$4.2 M</div>
+      <div class="l" lang-zh>第 3 年 ARR 目標(64% 可再發生)</div>
+      <div class="l" lang-en>Year-3 ARR target (64% recurring)</div>
+    </div>
+    <div class="fact">
+      <div class="v">14+</div>
+      <div class="l" lang-zh>中華電信登陸東南亞海底電纜</div>
+      <div class="l" lang-en>CHT submarine cables into SEA</div>
+    </div>
+  </div>
+
+  <div class="section-title" lang-zh>專案歷程</div>
+  <div class="section-title" lang-en>Project Timeline</div>
+
+  <div class="stage-grid">
+
+    <!-- Stage 1: Idea Brief -->
+    <div class="stage">
+      <div class="stage-head">
+        <div class="stage-phase">Phase 0 · Q1 2026</div>
+        <div class="stage-status status-done" lang-zh>已完成</div>
+        <div class="stage-status status-done" lang-en>DONE</div>
+      </div>
+      <h2 lang-zh>構想簡報</h2>
+      <h2 lang-en>Idea Brief</h2>
+      <div class="subtitle" lang-zh>完整構想藍圖 — 問題盤點 + 東南亞市場研究,作為初賽提案的素材來源。</div>
+      <div class="subtitle" lang-en>Full concept blueprint — problem inventory + SEA market research feeding the first-round proposal.</div>
+      <div class="links">
+        <a class="link primary" href="idea-brief/idea-brief-final.html">
+          <span lang-zh>構想簡報(英)</span><span lang-en>Idea Brief (EN)</span>
+          <span class="arr">→</span>
+        </a>
+        <a class="link" href="idea-brief/idea-brief-final-zh.html">
+          <span lang-zh>構想簡報(中)</span><span lang-en>Idea Brief (ZH)</span>
+          <span class="arr">→</span>
+        </a>
+        <a class="link" href="idea-brief/problems.md">
+          <span lang-zh>風險盤點 problems.md</span><span lang-en>Risk Inventory (problems.md)</span>
+          <span class="arr">→</span>
+        </a>
+        <a class="link" href="idea-brief/research-cht-sea-market.md">
+          <span lang-zh>東南亞市場研究</span><span lang-en>SEA Market Research</span>
+          <span class="arr">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Stage 2: First Proposal -->
+    <div class="stage active">
+      <div class="stage-head">
+        <div class="stage-phase">Phase 1 · Q2 2026</div>
+        <div class="stage-status status-now" lang-zh>進行中</div>
+        <div class="stage-status status-now" lang-en>CURRENT</div>
+      </div>
+      <h2 lang-zh>初賽提案</h2>
+      <h2 lang-en>First Proposal</h2>
+      <div class="subtitle" lang-zh>12 頁完整提案,對應評分四大維度:創新、市場、衝擊、可行性。附 PDF 列印版。</div>
+      <div class="subtitle" lang-en>12-slide proposal mapped to the four scoring dimensions: Innovation, Market, Impact, Feasibility. Print-ready PDF included.</div>
+      <div class="links">
+        <a class="link primary" href="first-proposal/proposal-en.html">
+          <span lang-zh>提案(英)— 主要版本</span><span lang-en>Proposal (EN) — primary</span>
+          <span class="arr">→</span>
+        </a>
+        <a class="link" href="first-proposal/proposal-zh.html">
+          <span lang-zh>提案(中)— 自用審閱版</span><span lang-en>Proposal (ZH) — review copy</span>
+          <span class="arr">→</span>
+        </a>
+        <a class="link" href="first-proposal/proposal-en.pdf">
+          <span lang-zh>PDF 下載(英)</span><span lang-en>PDF Download (EN)</span>
+          <span class="arr">↓</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Stage 3: Final Proposal -->
+    <div class="stage upcoming">
+      <div class="stage-head">
+        <div class="stage-phase">Phase 2 · Q3 2026</div>
+        <div class="stage-status status-next" lang-zh>規劃中</div>
+        <div class="stage-status status-next" lang-en>UPCOMING</div>
+      </div>
+      <h2 lang-zh>決賽提案</h2>
+      <h2 lang-en>Final Proposal</h2>
+      <div class="subtitle" lang-zh>通過初賽後,擴展為含簡報與 Q&amp;A 腳本的決賽版本。整合改進意見與真實 PoC 資料。</div>
+      <div class="subtitle" lang-en>Post-first-round expansion including pitch deck and Q&amp;A script. Integrates feedback and real PoC data.</div>
+      <div class="links">
+        <a class="link disabled">
+          <span lang-zh>決賽提案(英)</span><span lang-en>Final Proposal (EN)</span>
+          <span class="flag" lang-zh>敬請期待</span><span class="flag" lang-en>coming soon</span>
+        </a>
+        <a class="link disabled">
+          <span lang-zh>簡報投影片</span><span lang-en>Presentation Deck</span>
+          <span class="flag" lang-zh>敬請期待</span><span class="flag" lang-en>coming soon</span>
+        </a>
+        <a class="link disabled">
+          <span lang-zh>Q&amp;A 腳本</span><span lang-en>Judge Q&amp;A Script</span>
+          <span class="flag" lang-zh>敬請期待</span><span class="flag" lang-en>coming soon</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" lang-zh>參考資源</div>
+  <div class="section-title" lang-en>Reference Materials</div>
+
+  <div class="resources">
+    <a class="res-card" href="評分標準.pdf">
+      <div class="ic">📊</div>
+      <div class="body">
+        <h3 lang-zh>CHT 評分標準</h3>
+        <h3 lang-en>CHT Scoring Criteria</h3>
+        <p lang-zh>官方評分維度與提案結構建議 — 每頁都對應一個評分項目</p>
+        <p lang-en>Official scoring dimensions and structural guidelines — every slide maps to a rubric item</p>
+      </div>
+    </a>
+    <a class="res-card" href="timeline.txt">
+      <div class="ic">📅</div>
+      <div class="body">
+        <h3 lang-zh>競賽時程</h3>
+        <h3 lang-en>Competition Timeline</h3>
+        <p lang-zh>從構想提交到決賽的所有截止日期</p>
+        <p lang-en>All deadlines from idea submission to finals</p>
+      </div>
+    </a>
+    <a class="res-card" href="idea-brief/競賽提案細節.pdf">
+      <div class="ic">📋</div>
+      <div class="body">
+        <h3 lang-zh>競賽提案細節</h3>
+        <h3 lang-en>Competition Brief</h3>
+        <p lang-zh>主辦單位原始提案說明文件</p>
+        <p lang-en>Original host-provided competition brief</p>
+      </div>
+    </a>
+    <a class="res-card" href="idea-brief/research-cht-sea-market.md">
+      <div class="ic">🌏</div>
+      <div class="body">
+        <h3 lang-zh>東南亞市場深度研究</h3>
+        <h3 lang-en>SEA Market Deep-Dive</h3>
+        <p lang-zh>馬、越、新半導體聚落、CHT 在地能力、競爭格局</p>
+        <p lang-en>MY/VN/SG semiconductor clusters, CHT regional capabilities, competition</p>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="cht">中華電信 Chunghwa Telecom · AI-Enabled Business Competition</div>
+  <div lang-zh>本網站由 ChainSight 專案團隊維護 · 所有提案內容為競賽機密</div>
+  <div lang-en>Maintained by the ChainSight project team · All proposal contents are competition-confidential</div>
+  <div style="margin-top:10px;opacity:0.7;font-size:11px;">© 2026 ChainSight · Built for CHT AI Business Competition</div>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.documentElement.setAttribute('data-lang', lang);
+    document.getElementById('lang-zh-btn').classList.toggle('active', lang === 'zh');
+    document.getElementById('lang-en-btn').classList.toggle('active', lang === 'en');
+    try { localStorage.setItem('chainsight-lang', lang); } catch (e) {}
+  }
+  (function() {
+    var saved = null;
+    try { saved = localStorage.getItem('chainsight-lang'); } catch (e) {}
+    setLang(saved === 'en' ? 'en' : 'zh');
+  })();
+</script>
+
+</body>
+</html>
