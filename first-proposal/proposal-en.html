@@ -1275,8 +1275,8 @@
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -0.022em;
-    margin-bottom: 18px;
-    margin-top: 8px;
+    margin-bottom: 28px;
+    margin-top: 4px;
     max-width: 1040px;
   }
   .risk-hero em { font-style: italic; color: var(--accent); }
@@ -1297,9 +1297,9 @@
   }
   .risk-row {
     display: grid;
-    grid-template-columns: 140px 1fr 1.3fr;
+    grid-template-columns: 160px 1fr 1.3fr;
     gap: 26px;
-    padding: 11px 0;
+    padding: 12px 0;
     border-bottom: 1px solid var(--hairline);
     align-items: baseline;
   }
@@ -1312,10 +1312,10 @@
     font-weight: 700;
   }
   .risk-row .r-risk {
-    font-size: 11.5px;
+    font-size: 12px;
     color: var(--ink-3);
     line-height: 1.55;
-    opacity: 0.75;
+    opacity: 0.85;
   }
   .risk-row .r-risk b { color: var(--rust); font-weight: 600; }
   .risk-row .r-fix {
@@ -3017,7 +3017,7 @@
         <div class="risk-row">
           <div class="r-cat">Data privacy</div>
           <div class="r-risk">Malaysia's new privacy act (June 2025) makes raw production data leaving the factory a <b>seven-figure fine</b>. Chip-maker NDAs are even stricter.</div>
-          <div class="r-fix"><b>Raw data never leaves the plant.</b> Only anonymised summary numbers travel — and only over CHT's own cables. We appointed a data-protection officer in the Malaysia subsidiary from day one.</div>
+          <div class="r-fix"><b>Raw data never leaves the plant.</b> Only &lt;2 KB of anonymised summary KPIs travel, and only over CHT's own cables. A data-protection officer sits in the Malaysia subsidiary from day one.</div>
         </div>
 
         <div class="risk-row">
@@ -3029,13 +3029,13 @@
         <div class="risk-row">
           <div class="r-cat">AI cold-start</div>
           <div class="r-risk">A brand-new supplier has no historical data. How does the AI work on day one?</div>
-          <div class="r-fix"><b>We pre-trained on three years of ASE Taiwan data</b> — 18 million labelled events. A new supplier warms up in 72 hours on that model and fine-tunes on local data after 30 days.</div>
+          <div class="r-fix"><b>Pre-trained on representative semiconductor assembly data</b> through our ASE Taiwan design partnership. A new supplier warms up in 72 hours on that model, then fine-tunes on its own local data after 30 days.</div>
         </div>
 
         <div class="risk-row">
           <div class="r-cat">ERP integration</div>
           <div class="r-risk">Connecting to SAP or Oracle is slow, expensive, and the talent is scarce. A big chunk of the budget could disappear there.</div>
-          <div class="r-fix"><b>Phase 1–3 does not touch ERP.</b> We read directly from the factory-floor controllers. ERP connectors are a Phase 5 upsell through system-integrator partners.</div>
+          <div class="r-fix"><b>The 18-month plan does not touch ERP.</b> We read directly from the factory-floor controllers. ERP connectors are a post-Phase 4 partner-led offering through system integrators.</div>
         </div>
       </div>
     </div>
