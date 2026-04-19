@@ -731,17 +731,18 @@
   .tech-step .step-n em { font-size: 14px; opacity: 0.6; }
   .tech-step .step-t {
     font-family: 'Source Serif 4', Georgia, serif;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 600;
     color: var(--ink);
     letter-spacing: -0.01em;
     line-height: 1.2;
     margin-bottom: 2px;
   }
   .tech-step .step-d {
-    font-size: 11.5px;
-    line-height: 1.5;
+    font-size: 11px;
+    line-height: 1.55;
     color: var(--ink-3);
+    margin-top: 3px;
   }
   .tech-step .step-d b { color: var(--ink); }
 
@@ -2638,17 +2639,17 @@
           <span class="chap">CH. 05</span>
           <span class="cat">Technical Architecture</span>
         </div>
-        <div class="tagline" style="display:none;"></div>
+        <div class="tagline">Every layer uses CHT infrastructure no competitor can match.</div>
       </div>
       <div class="pager"><b>08</b> / 16</div>
     </div>
     <div class="slide-body">
       <div class="eyebrow accent">Built for the tropics, built for the law</div>
       <h2 class="display" style="font-size: 40px; margin: 8px 0 8px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.08;">
-        A <em style="color:var(--accent)">$240 box</em>. Five steps. Your data never leaves the factory.
+        A <em style="color:var(--accent)">$240 box</em>. Five steps. Your <em style="color:var(--accent)">raw data</em> never leaves the factory.
       </h2>
       <p class="lede" style="font-size: 14px; margin-bottom: 20px; line-height: 1.45;">
-        Designed around Southeast Asia's three hardest constraints — tropical heat, blocked 5G spectrum, Malaysia's new privacy law — not a generic cloud template.
+        Designed around Southeast Asia's three hardest constraints — tropical heat, monopolized 5G spectrum, Malaysia's new privacy law — not a generic cloud template.
       </p>
 
       <div class="tech-layout">
@@ -2658,7 +2659,7 @@
               <div class="step-n">01<em>.</em></div>
               <div>
                 <div class="step-t">A small rugged computer</div>
-                <div class="step-d">An <b>$240 industrial box</b> (NVIDIA Jetson) with Wi-Fi 6, mobile backup, and an IP65 case that handles 40°C + humidity. Plugs into the sensors the supplier already owns.</div>
+                <div class="step-d">An <b>$240 industrial box</b> (NVIDIA Jetson) with Wi-Fi 6, <b>4G LTE failover</b>, and a dust- and splash-proof (IP65) case that handles 40°C + humidity. Plugs into the sensors the supplier already owns.</div>
               </div>
             </div>
             <div class="tech-step">
@@ -2678,8 +2679,8 @@
             <div class="tech-step">
               <div class="step-n">04<em>.</em></div>
               <div>
-                <div class="step-t">CHT's own pipes carry it</div>
-                <div class="step-d">The packet travels over <b>CHT's private network</b>, then a <b>CHT-owned undersea cable</b> to Taiwan — not AWS, not Azure, not a Chinese link.</div>
+                <div class="step-t">CHT infrastructure carries it</div>
+                <div class="step-d">The packet travels over <b>CHT's private MPLS</b>, then <b>one of CHT's 14 undersea cables</b> direct to Taiwan — not AWS, not Azure, not a Chinese fibre. The only Taiwan-licensed route that touches neither US nor Chinese infrastructure.</div>
               </div>
             </div>
             <div class="tech-step">
@@ -2696,13 +2697,13 @@
           <div class="side-label">The SE Asia constraints we designed around</div>
           <h3>Three things <em>no generic cloud can solve.</em></h3>
           <p>
-            <b>1 · No private 5G.</b> Malaysia's regulator gave 5G rights to a single local body, and foreign operators can't get spectrum. So we built the base layer on <b>Wi-Fi 6</b> — it works, it's cheap, it's legal everywhere in the region.
+            <b>1 · No private 5G.</b> Malaysia assigned all 5G spectrum to a single wholesale body (DNB / dual-network), so private 5G slices aren't available to foreign operators. We build on <b>Wi-Fi 6</b> — legal everywhere in the region and already deployed in most fabs.
           </p>
           <p>
-            <b>2 · Data privacy fines hit in June 2025.</b> Malaysia's new law means a €1M-equivalent penalty for any raw production data that leaves the factory. That's why <span class="module-tag pulse">Pulse</span> and <span class="module-tag predict">Predict</span> run on-site — raw sensor data never leaves.
+            <b>2 · PDPA penalties active since June 2025.</b> Malaysia's new privacy law raised the max fine to <b>RM1M per offence</b> for raw production data leaving the factory. That's why <span class="module-tag pulse">Pulse</span> and <span class="module-tag predict">Predict</span> run on-site — raw sensor data never crosses the wall.
           </p>
           <p>
-            <b>3 · Tropical conditions.</b> The hardware is sealed for 40°C + 85% humidity, has backup power, and keeps working for up to 72 hours if the connection drops.
+            <b>3 · Tropical conditions.</b> Hardware sealed for 40°C + 85% humidity with backup power, running up to 72 hours offline. Serviced on-site by <b>CHT Malaysia Sdn. Bhd.</b> (Dec 2025) — no other Taiwanese telco has feet on the ground.
           </p>
           <div class="reg-pills">
             <span class="reg-pill ok">MY Privacy Act 2025</span>
@@ -2716,7 +2717,7 @@
       </div>
     </div>
     <div class="slide-footer">
-      <div class="left">Every tech choice traces back to a real SE Asia constraint — tropical climate, blocked 5G spectrum, Malaysian privacy law, or Taiwan supply-chain policy</div>
+      <div class="left">Every tech choice traces back to a real SE Asia constraint — tropical climate, monopolized 5G spectrum, Malaysia's privacy law, or Taiwan supply-chain policy</div>
       <div class="right">ChainSight · 08</div>
     </div>
   </section>
